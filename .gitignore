@@ -1,0 +1,9 @@
+.idea/
+*.iml
+
+target/
+pom.xml.versionsBackup
+
+aem-author/
+
+.DS_Store
