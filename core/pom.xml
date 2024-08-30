@@ -83,16 +83,18 @@ Import-Package: javax.annotation;version=0.0.0,*
 
         <!-- OpenTelemetry -->
         <dependency>
-            <groupId>be.orbinson.osgi</groupId>
-            <artifactId>opentelemetry-java</artifactId>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>be.orbinson.osgi</groupId>
-            <artifactId>opentelemetry-java-instrumentation</artifactId>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-logback-appender-1.0</artifactId>
+            <version>${opentelemetry.instrumentation.version}-alpha</version>
         </dependency>
         <dependency>
-            <groupId>be.orbinson.osgi</groupId>
-            <artifactId>semantic-conventions-java</artifactId>
+            <groupId>io.opentelemetry.semconv</groupId>
+            <artifactId>opentelemetry-semconv</artifactId>
+            <version>${opentelemetry.semconv.version}-alpha</version>
         </dependency>
 
         <!-- AEM -->
