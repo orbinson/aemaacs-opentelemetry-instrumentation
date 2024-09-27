@@ -40,7 +40,7 @@ OTEL_RESOURCE_ATTRIBUTES=service.name=aem-author
 ```
 
 The AEMaaCS OpenTelemetry Instrumentation bundle can be configured with an OSGi configurations with
-pid `be.orbinson.aem.opentelemetry.impl.services.core.opentelemetry.OpenTelemetryConfigImpl`
+pid `be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryConfigImpl`
 
 | property                 | description                                          | default    |
 |--------------------------|------------------------------------------------------|------------|
