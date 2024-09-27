@@ -33,7 +33,7 @@
                         <embedded>
                             <groupId>be.orbinson.aem</groupId>
                             <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-vendor-packages/application/install</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-packages/application/install</target>
                         </embedded>
                     </embeddeds>
                 </configuration>

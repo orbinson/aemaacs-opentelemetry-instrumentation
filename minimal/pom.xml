@@ -28,12 +28,12 @@
                         <embedded>
                             <groupId>be.orbinson.aem</groupId>
                             <artifactId>aemaacs-opentelemetry-instrumentation.api</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-packages/application/install</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-minimal-packages/application/install</target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.aem</groupId>
                             <artifactId>aemaacs-opentelemetry-instrumentation.core</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-packages/application/install</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-minimal-packages/application/install</target>
                         </embedded>
                     </embeddeds>
                 </configuration>
