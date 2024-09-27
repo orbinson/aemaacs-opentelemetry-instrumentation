@@ -1,31 +1,36 @@
 <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="[publish] core" type="MavenRunConfiguration" factoryName="Maven">
-        <MavenSettings>
-            <option name="myGeneralSettings"/>
-            <option name="myRunnerSettings"/>
-            <option name="myRunnerParameters">
-                <MavenRunnerParameters>
-                    <option name="profiles">
-                        <set/>
-                    </option>
-                    <option name="goals">
-                        <list>
-                            <option value="clean"/>
-                            <option value="install"/>
-                            <option value="-Daem.port=4503"/>
-                        </list>
-                    </option>
-                    <option name="pomFileName" value="pom.xml"/>
-                    <option name="profilesMap">
-                        <map>
-                            <entry key="autoInstallBundle" value="true"/>
-                        </map>
-                    </option>
-                    <option name="resolveToWorkspace" value="false"/>
-                    <option name="workingDirPath" value="$PROJECT_DIR$/core"/>
-                </MavenRunnerParameters>
-            </option>
-        </MavenSettings>
-        <method v="2"/>
-    </configuration>
+  <configuration default="false" name="[publish] core" type="MavenRunConfiguration" factoryName="Maven">
+    <MavenSettings>
+      <option name="myGeneralSettings" />
+      <option name="myRunnerSettings" />
+      <option name="myRunnerParameters">
+        <MavenRunnerParameters>
+          <option name="cmdOptions" />
+          <option name="profiles">
+            <set />
+          </option>
+          <option name="goals">
+            <list>
+              <option value="clean" />
+              <option value="install" />
+              <option value="-Daem.port=4503" />
+            </list>
+          </option>
+          <option name="multimoduleDir" />
+          <option name="pomFileName" value="pom.xml" />
+          <option name="profilesMap">
+            <map>
+              <entry key="autoInstallBundle" value="true" />
+            </map>
+          </option>
+          <option name="projectsCmdOptionValues">
+            <list />
+          </option>
+          <option name="resolveToWorkspace" value="false" />
+          <option name="workingDirPath" value="$PROJECT_DIR$/core" />
+        </MavenRunnerParameters>
+      </option>
+    </MavenSettings>
+    <method v="2" />
+  </configuration>
 </component>
