@@ -10,6 +10,7 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.servlets.ServletResolver;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,6 +37,14 @@ class OpenTelemetryComponentFilterTest {
     @Mock
     private ServletResolver servletResolver;
 
+    // Disable exporting
+    @BeforeAll
+    static void beforeAll() {
+        System.setProperty("otel.metrics.exporter", "none");
+        System.setProperty("otel.traces.exporter", "none");
+        System.setProperty("otel.logs.exporter", "none");
+    }
+    
     @BeforeEach
     void setUp() {
         servletResolver = context.registerService(ServletResolver.class, servletResolver);

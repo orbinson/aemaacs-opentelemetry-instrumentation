@@ -13,6 +13,8 @@
 
     <modules>
         <module>all</module>
+        <module>minimal</module>
+        <module>opentelemetry-okhttp</module>
         <module>api</module>
         <module>core</module>
     </modules>
@@ -271,7 +273,7 @@ Bundle-DocURL:
                 <plugin>
                     <groupId>com.adobe.aem</groupId>
                     <artifactId>aemanalyser-maven-plugin</artifactId>
-                    <version>1.5.8</version>
+                    <version>1.6.6</version>
                     <extensions>true</extensions>
                 </plugin>
                 <!-- Content Package Plugin -->
@@ -679,22 +681,6 @@ Bundle-DocURL:
                 <version>${opentelemetry.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>be.orbinson.osgi</groupId>
-                <artifactId>opentelemetry-java</artifactId>
-                <version>${opentelemetry.version}.000-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>be.orbinson.osgi</groupId>
-                <artifactId>opentelemetry-java-instrumentation</artifactId>
-                <version>${opentelemetry.instrumentation.version}.000-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>be.orbinson.osgi</groupId>
-                <artifactId>semantic-conventions-java</artifactId>
-                <version>${opentelemetry.semconv.version}.000-SNAPSHOT</version>
             </dependency>
             
             <!-- Testing -->

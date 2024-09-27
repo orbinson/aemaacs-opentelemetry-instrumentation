@@ -1,10 +1,9 @@
 package be.orbinson.aem.opentelemetry.core.services.impl;
 
-import be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryConfigImpl;
-import be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryFactoryImpl;
 import io.opentelemetry.api.OpenTelemetry;
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
@@ -15,17 +14,26 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith({AemContextExtension.class, MockitoExtension.class})
 class OpenTelemetryFactoryImplTest {
+
     private final AemContext context = new AemContext();
 
     @Spy
     private OpenTelemetryFactoryImpl openTelemetryFactory;
+
+    // Disable exporting
+    @BeforeAll
+    static void beforeAll() {
+        System.setProperty("otel.metrics.exporter", "none");
+        System.setProperty("otel.traces.exporter", "none");
+        System.setProperty("otel.logs.exporter", "none");
+    }
+
 
     @Test
     void testActivateWhenConfigIsEnabled() {
         context.registerInjectActivateService(
                 OpenTelemetryConfigImpl.class,
                 "enabled", true,
-                "endpoint", "http://collector:4318",
                 "enableLogAppender", true
         );
         openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
