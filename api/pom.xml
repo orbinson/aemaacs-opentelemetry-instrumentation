@@ -81,8 +81,8 @@ Import-Package: javax.annotation;version=0.0.0,*
     <dependencies>
         <!-- OpenTelemetry -->
         <dependency>
-            <groupId>be.orbinson.osgi</groupId>
-            <artifactId>opentelemetry-java</artifactId>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
         </dependency>
         
         <!-- AEM -->

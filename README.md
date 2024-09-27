@@ -1,13 +1,16 @@
 # AEMaaCS OpenTelemetry Instrumentation
 
-While AEMaaCS does not support injecting a JavaAgent to enable auto instrumentation and [Sling instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation/pull/9469) is not yet merged into OpenTelemetry this bundle can be used to add basic instrumentation to your application.
+While AEMaaCS does not support injecting a JavaAgent to enable auto instrumentation
+and [Sling instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation/pull/9469) is not yet
+merged into OpenTelemetry this bundle can be used to add basic instrumentation to your application.
 
 This bundle has two main features:
 
 * Add traces for HTTP requests and AEM components.
 * Configure a logging bridge for AEM logs.
 
-The vendor code provided by OpenTelemetry is provided by an [OSGi wrapper](https://github.com/orbinson/opentelemetry-osgi-wrappers).
+The vendor code provided by OpenTelemetry is provided by
+an [OSGi wrapper](https://github.com/orbinson/opentelemetry-osgi-wrappers).
 
 ## Configuration
 
@@ -47,3 +50,28 @@ pid `be.orbinson.aem.opentelemetry.impl.services.core.opentelemetry.OpenTelemetr
 | loggerNames              | Logger to forward when `enableLogAppender` is `true` | `["ROOT"]` |
 | traceComponents          | A span for AEM components                            | `false`    |
 | useGlobalOpenTelemetry   | Use global OpenTelemetry object                      | `false`    |
+
+## Installation
+
+Three content packages are provided that can be used.
+
+The first option is using the `minimal` package that will only install the AEMaaCS-specific classes to your AEM
+
+```xml
+
+<dependency>
+    <groupId>be.orbinson.aem</groupId>
+    <artifactId>aemaacs-opentelemetry-instrumentation.minimal</artifactId>
+</dependency>
+```
+
+The second option is using the `all` package, that will also install all required OpenTelemetry OSGi wrappers through
+the `opentelemetry-okhttp` content package so that you use the API and SDK classes together with OkHttp as exporter
+
+```xml
+
+<dependency>
+    <groupId>be.orbinson.aem</groupId>
+    <artifactId>aemaacs-opentelemetry-instrumentation.all</artifactId>
+</dependency>
+```

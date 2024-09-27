@@ -10,6 +10,7 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestPathInfo;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -30,6 +31,14 @@ class OpenTelemetryRequestFilterTest {
 
     private final AemContext context = new AemContext();
 
+    // Disable exporting
+    @BeforeAll
+    static void beforeAll() {
+        System.setProperty("otel.metrics.exporter", "none");
+        System.setProperty("otel.traces.exporter", "none");
+        System.setProperty("otel.logs.exporter", "none");
+    }
+    
     @Test
     void defaultConfig() throws ServletException, IOException {
         context.registerInjectActivateService(new OpenTelemetryConfigImpl());
