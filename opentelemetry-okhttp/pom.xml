@@ -14,6 +14,10 @@
     <packaging>content-package</packaging>
     <name>AEMaaCS OpenTelemetry Instrumentation - OpenTelemetry OkHttp</name>
     <description>Content package containing the OpenTelemetry OSGi Wrappers with OkHttp as exporter</description>
+    
+    <properties>
+        <asm.version>9.7</asm.version>
+    </properties>
 
     <build>
         <plugins>
@@ -162,6 +166,37 @@
                             <groupId>org.apache.servicemix.bundles</groupId>
                             <artifactId>org.apache.servicemix.bundles.okio</artifactId>
                             <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install</target>
+                        </embedded>
+
+                        <embedded>
+                            <groupId>org.apache.aries.spifly</groupId>
+                            <artifactId>org.apache.aries.spifly.dynamic.bundle</artifactId>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                        </embedded>
+                        <embedded>
+                            <groupId>org.ow2.asm</groupId>
+                            <artifactId>asm</artifactId>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                        </embedded>
+                        <embedded>
+                            <groupId>org.ow2.asm</groupId>
+                            <artifactId>asm-analysis</artifactId>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                        </embedded>
+                        <embedded>
+                            <groupId>org.ow2.asm</groupId>
+                            <artifactId>asm-commons</artifactId>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                        </embedded>
+                        <embedded>
+                            <groupId>org.ow2.asm</groupId>
+                            <artifactId>asm-util</artifactId>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                        </embedded>
+                        <embedded>
+                            <groupId>org.ow2.asm</groupId>
+                            <artifactId>asm-tree</artifactId>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
                         </embedded>
                     </embeddeds>
                 </configuration>
@@ -376,6 +411,38 @@
             <groupId>org.apache.servicemix.bundles</groupId>
             <artifactId>org.apache.servicemix.bundles.okio</artifactId>
             <version>3.8.0_1</version>
+        </dependency>
+
+        <!-- SpiFly because OpenTelemetry uses ServiceLoader -->
+        <dependency>
+            <groupId>org.apache.aries.spifly</groupId>
+            <artifactId>org.apache.aries.spifly.dynamic.bundle</artifactId>
+            <version>1.3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>${asm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-analysis</artifactId>
+            <version>${asm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>${asm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>${asm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-tree</artifactId>
+            <version>${asm.version}</version>
         </dependency>
     </dependencies>
 </project>
