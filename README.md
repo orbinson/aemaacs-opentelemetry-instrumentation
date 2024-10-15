@@ -19,7 +19,7 @@ the OpenTelemetry SDK you need to provide the following environment variables.
 
 ```text
 OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
-OTEL_RESOURCE_ATTRIBUTES=service.name=aem-author
+OTEL_SERVICE_NAME=aem-author
 ```
 
 If you need configure the HTTP exporter you need to set the following environment
@@ -27,7 +27,7 @@ If you need configure the HTTP exporter you need to set the following environmen
 ```text
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-OTEL_RESOURCE_ATTRIBUTES=service.name=aem-author
+OTEL_SERVICE_NAME=aem-author
 ```
 
 For local debugging you can use the logging exporter to print to the console
@@ -36,7 +36,7 @@ For local debugging you can use the logging exporter to print to the console
 OTEL_TRACES_EXPORTER=logging
 OTEL_METRICS_EXPORTER=logging
 OTEL_LOGS_EXPORTER=logging
-OTEL_RESOURCE_ATTRIBUTES=service.name=aem-author
+OTEL_SERVICE_NAME=aem-author
 ```
 
 The AEMaaCS OpenTelemetry Instrumentation bundle can be configured with an OSGi configurations with
