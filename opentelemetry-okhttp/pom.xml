@@ -295,98 +295,98 @@
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-api-incubator</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-context</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-common</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-logging</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-otlp</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-otlp-common</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-sender-okhttp</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-common</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-extension-incubator</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-logs</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-metrics</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-trace</artifactId>
-            <version>${opentelemetry.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.version}.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-semconv</artifactId>
-            <version>${opentelemetry.semconv.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.semconv.version}-alpha.0000</version>
         </dependency>
 
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-logback-appender-1.0</artifactId>
-            <version>${opentelemetry.instrumentation.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.instrumentation.version}-alpha.0000</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-instrumentation-api</artifactId>
-            <version>${opentelemetry.instrumentation.version}.000-SNAPSHOT</version>
+            <version>${opentelemetry.instrumentation.version}.0000</version>
         </dependency>
 
         <!-- OpenTelemetry dependencies -->
