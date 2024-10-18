@@ -26,6 +26,7 @@ jobs:
       central: ${{ inputs.central }}
       github: ${{ inputs.github }}
       push: ${{ inputs.push }}
+      java-version: 11
     secrets:
       username: ${{ secrets.SONATYPE_USERNAME }}
       password: ${{ secrets.SONATYPE_PASSWORD }}
