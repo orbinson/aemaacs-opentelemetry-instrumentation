@@ -1,0 +1,8 @@
+name: Build
+
+on: [ push, pull_request ]
+
+
+jobs:
+  call-workflow:
+    uses: orbinson/workflows/.github/workflows/aem-maven-build.yml@main

@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      central:
+        description: 'Release to Maven Central'
+        required: false
+        default: true
+        type: boolean
+      github:
+        description: 'Create GitHub release'
+        required: false
+        default: true
+        type: boolean
+      push:
+        description: 'Push changes'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  call-workflow:
+    uses: orbinson/workflows/.github/workflows/maven-release.yml@main
+    with:
+      central: ${{ inputs.central }}
+      github: ${{ inputs.github }}
+      push: ${{ inputs.push }}
+    secrets:
+      username: ${{ secrets.SONATYPE_USERNAME }}
+      password: ${{ secrets.SONATYPE_PASSWORD }}
+      gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+      gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
