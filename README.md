@@ -8,6 +8,7 @@ This bundle has two main features:
 
 * Add traces for HTTP requests and AEM components.
 * Configure a logging bridge for AEM logs.
+* Provide an instrumented Apache HttpClient.
 
 The vendor code provided by OpenTelemetry is provided by
 an [OSGi wrapper](https://github.com/orbinson/opentelemetry-osgi-wrappers).
@@ -16,13 +17,7 @@ an [OSGi wrapper](https://github.com/orbinson/opentelemetry-osgi-wrappers).
 
 To [autoconfigure](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md)
 the OpenTelemetry SDK you need to provide the following environment variables.
-
-```text
-OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
-OTEL_SERVICE_NAME=aem-author
-```
-
-If you need configure the HTTP exporter you need to set the following environment
+The example uses the http exporter.
 
 ```text
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
@@ -30,7 +25,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
 OTEL_SERVICE_NAME=aem-author
 ```
 
-For local debugging you can use the logging exporter to print to the console
+For local debugging you can use the logging exporter to print to the console.
 
 ```text
 OTEL_TRACES_EXPORTER=logging
@@ -55,23 +50,52 @@ pid `be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryConfigImpl`
 
 Three content packages are provided that can be used.
 
-The first option is using the `minimal` package that will only install the AEMaaCS-specific classes to your AEM
+The `all` package, which you will be using in most case, containing the `minimal` and the `opentelemetry-okhttp-exporter` packages.
 
 ```xml
+<dependency>
+    <groupId>be.orbinson.aem</groupId>
+    <artifactId>aemaacs-opentelemetry-instrumentation.all</artifactId>
+</dependency>
+```
 
+The `minimal` package containing the AEMaaCS-specific classes to add instumentation.
+
+```xml
 <dependency>
     <groupId>be.orbinson.aem</groupId>
     <artifactId>aemaacs-opentelemetry-instrumentation.minimal</artifactId>
 </dependency>
 ```
 
-The second option is using the `all` package, that will also install all required OpenTelemetry OSGi wrappers through
-the `opentelemetry-okhttp` content package so that you use the API and SDK classes together with OkHttp as exporter
+The `opentelemetry-okhttp-exporter` package that contains all the OSGi wrapped dependencies.
 
 ```xml
-
 <dependency>
     <groupId>be.orbinson.aem</groupId>
-    <artifactId>aemaacs-opentelemetry-instrumentation.all</artifactId>
+    <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp-exporter</artifactId>
 </dependency>
+```
+
+## Instrumented Apache HttpClient
+
+To use an instrumented Apache HttpClient you can use the `io.opentelemetry.instrumentation.apachehttpclient.v4_3.ApacheHttpClientTelemetry`.
+
+```java
+// Inject OpenTelemetry service
+@OSGiService
+private OpenTelemetryFactory openTelemetryFactory;
+
+try(CloseableHttpClient client = ApacheHttpClientTelemetry.create(openTelemetryFactory.get()).newHttpClient()) {
+    // Create and send a request
+    HttpGet httpGet = new HttpGet("http://host/endpoint");
+
+    try(CloseableHttpResponse response = client.execute(httpGet)) {
+        if (response.getStatusLine().getStatusCode() == 200) {
+            // OK
+        }
+    }
+} catch (IOException e) {
+    // Handle exception
+}
 ```
