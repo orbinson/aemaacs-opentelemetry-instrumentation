@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2024-10-18
+
 - Initial release with OpenTelemetry 1.43.0 SDK and dependencies
 - Instrumented Apache HttpClient 4.3
 - Logging bridge for using the Logback Appender 1.0
+
+[unreleased]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/8105cce5a1ca5965f633503305ce800d11b5ab2d...1.0.0
