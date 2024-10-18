@@ -4,7 +4,7 @@ While AEMaaCS does not support injecting a JavaAgent to enable auto instrumentat
 and [Sling instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation/pull/9469) is not yet
 merged into OpenTelemetry this bundle can be used to add basic instrumentation to your application.
 
-This bundle has two main features:
+This bundle has three main features:
 
 * Add traces for HTTP requests and AEM components.
 * Configure a logging bridge for AEM logs.
