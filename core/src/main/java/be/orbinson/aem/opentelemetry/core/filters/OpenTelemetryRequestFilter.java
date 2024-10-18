@@ -11,7 +11,10 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapPropagator;
+import io.opentelemetry.semconv.HttpAttributes;
 import io.opentelemetry.semconv.SemanticAttributes;
+import io.opentelemetry.semconv.ServerAttributes;
+import io.opentelemetry.semconv.UrlAttributes;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -109,20 +112,32 @@ public class OpenTelemetryRequestFilter implements Filter {
 
         log.trace("End span with name '{}", spanName);
     }
-
+    
     private static void setRequestSpanAttributes(Span serverSpan, SlingHttpServletRequest request) {
-        serverSpan.setAttribute(SemanticAttributes.HTTP_REQUEST_METHOD, request.getMethod());
-        serverSpan.setAttribute(SemanticAttributes.HTTP_ROUTE, getRoute(request.getRequestPathInfo()));
-        serverSpan.setAttribute(SemanticAttributes.URL_PATH, request.getRequestURI());
-        serverSpan.setAttribute(SemanticAttributes.URL_SCHEME, request.isSecure() ? "https" : "http");
+        serverSpan.setAttribute(HttpAttributes.HTTP_REQUEST_METHOD, request.getMethod());
+        serverSpan.setAttribute(HttpAttributes.HTTP_ROUTE, getRoute(request.getRequestPathInfo()));
+        serverSpan.setAttribute(UrlAttributes.URL_PATH, request.getRequestURI());
+        serverSpan.setAttribute(UrlAttributes.URL_SCHEME, request.isSecure() ? "https" : "http");
         if (!request.getRequestParameterList().isEmpty()) {
             String requestParameters = request.getRequestParameterList().stream()
                     .map(requestParameter -> requestParameter.getName() + "=" + requestParameter.getString())
                     .collect(Collectors.joining("&"));
-            serverSpan.setAttribute(SemanticAttributes.URL_QUERY, requestParameters);
+            serverSpan.setAttribute(UrlAttributes.URL_QUERY, requestParameters);
         }
-        serverSpan.setAttribute(SemanticAttributes.SERVER_ADDRESS, getHost(request));
-        serverSpan.setAttribute(SemanticAttributes.SERVER_PORT, getPort(request));
+        serverSpan.setAttribute(UrlAttributes.URL_FULL, getFullUrl(request));
+        serverSpan.setAttribute(ServerAttributes.SERVER_ADDRESS, getHost(request));
+        serverSpan.setAttribute(ServerAttributes.SERVER_PORT, getPort(request));
+    }
+
+    private static String getFullUrl(SlingHttpServletRequest request) {
+        StringBuffer requestUrl = request.getRequestURL();
+        String queryString = request.getQueryString();
+
+        if (queryString == null) {
+            return requestUrl.toString();
+        } else {
+            return requestUrl.append('?').append(queryString).toString();
+        }
     }
 
     private static String getHost(SlingHttpServletRequest request) {
