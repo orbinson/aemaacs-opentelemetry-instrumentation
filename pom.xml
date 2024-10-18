@@ -13,10 +13,10 @@
 
     <modules>
         <module>all</module>
-        <module>minimal</module>
-        <module>opentelemetry-okhttp</module>
         <module>api</module>
         <module>core</module>
+        <module>minimal</module>
+        <module>opentelemetry-okhttp-exporter</module>
     </modules>
 
     <organization>

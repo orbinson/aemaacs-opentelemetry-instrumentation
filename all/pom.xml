@@ -32,7 +32,7 @@
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.aem</groupId>
-                            <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp</artifactId>
+                            <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp-exporter</artifactId>
                             <target>/apps/aemaacs-opentelemetry-instrumentation-packages/application/install</target>
                         </embedded>
                     </embeddeds>
@@ -136,7 +136,7 @@
         </dependency>
         <dependency>
             <groupId>be.orbinson.aem</groupId>
-            <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp</artifactId>
+            <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp-exporter</artifactId>
             <version>${project.version}</version>
             <type>zip</type>
         </dependency>

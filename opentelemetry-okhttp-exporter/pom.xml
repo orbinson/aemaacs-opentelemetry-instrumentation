@@ -10,9 +10,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp</artifactId>
+    <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp-exporter</artifactId>
     <packaging>content-package</packaging>
-    <name>AEMaaCS OpenTelemetry Instrumentation - OpenTelemetry OkHttp</name>
+    <name>AEMaaCS OpenTelemetry Instrumentation - OpenTelemetry OkHttp Exporter</name>
     <description>Content package containing the OpenTelemetry OSGi Wrappers with OkHttp as exporter</description>
     
     <properties>
@@ -32,171 +32,171 @@
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-api</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-api-incubator</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-context</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-exporter-common</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-exporter-logging</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-exporter-otlp</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-exporter-otlp-common</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-exporter-sender-okhttp</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-sdk</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-sdk-common</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-sdk-extension-incubator</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-sdk-logs</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-sdk-metrics</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-sdk-trace</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-semconv</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
 
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-logback-appender-1.0</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install
                             </target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-instrumentation-api</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install</target>
                         </embedded>
 
                         <!-- OpenTelemetry dependencies -->
                         <embedded>
                             <groupId>org.snakeyaml</groupId>
                             <artifactId>snakeyaml-engine</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install</target>
                         </embedded>
 
                         <!-- OkHttp with dependencies -->
                         <embedded>
                             <groupId>org.apache.servicemix.bundles</groupId>
                             <artifactId>org.apache.servicemix.bundles.okhttp</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install</target>
                         </embedded>
                         <embedded>
                             <groupId>org.jetbrains.kotlin</groupId>
                             <artifactId>kotlin-osgi-bundle</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install</target>
                         </embedded>
                         <embedded>
                             <groupId>org.apache.servicemix.bundles</groupId>
                             <artifactId>org.apache.servicemix.bundles.okio</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install</target>
                         </embedded>
 
                         <embedded>
                             <groupId>org.apache.aries.spifly</groupId>
                             <artifactId>org.apache.aries.spifly.dynamic.bundle</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/2</target>
                         </embedded>
                         <embedded>
                             <groupId>org.ow2.asm</groupId>
                             <artifactId>asm</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/2</target>
                         </embedded>
                         <embedded>
                             <groupId>org.ow2.asm</groupId>
                             <artifactId>asm-analysis</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/2</target>
                         </embedded>
                         <embedded>
                             <groupId>org.ow2.asm</groupId>
                             <artifactId>asm-commons</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/2</target>
                         </embedded>
                         <embedded>
                             <groupId>org.ow2.asm</groupId>
                             <artifactId>asm-util</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/2</target>
                         </embedded>
                         <embedded>
                             <groupId>org.ow2.asm</groupId>
                             <artifactId>asm-tree</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-packages/application/install/2</target>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/2</target>
                         </embedded>
                     </embeddeds>
                 </configuration>
@@ -295,98 +295,98 @@
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-api-incubator</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-context</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-common</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-logging</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-otlp</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-otlp-common</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-sender-okhttp</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-common</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-extension-incubator</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-logs</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-metrics</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-sdk-trace</artifactId>
-            <version>${opentelemetry.version}.0000</version>
+            <version>${opentelemetry.version}.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-semconv</artifactId>
-            <version>${opentelemetry.semconv.version}-alpha.0000</version>
+            <version>${opentelemetry.semconv.version}-alpha.0001-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-logback-appender-1.0</artifactId>
-            <version>${opentelemetry.instrumentation.version}-alpha.0000</version>
+            <version>${opentelemetry.instrumentation.version}-alpha.0001-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-instrumentation-api</artifactId>
-            <version>${opentelemetry.instrumentation.version}.0000</version>
+            <version>${opentelemetry.instrumentation.version}.0001-SNAPSHOT</version>
         </dependency>
 
         <!-- OpenTelemetry dependencies -->
