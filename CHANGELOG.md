@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Ensure OpenTelemetry bundles are available at bundle startup
+
 ## [1.0.0] - 2024-10-18
 
 - Initial release with OpenTelemetry 1.43.0 SDK and dependencies
