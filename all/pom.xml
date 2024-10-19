@@ -27,12 +27,12 @@
                     <embeddeds>
                         <embedded>
                             <groupId>be.orbinson.aem</groupId>
-                            <artifactId>aemaacs-opentelemetry-instrumentation.minimal</artifactId>
-                            <target>/apps/aemaacs-opentelemetry-instrumentation-packages/application/install</target>
+                            <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp-exporter</artifactId>
+                            <target>/apps/aemaacs-opentelemetry-instrumentation-packages/application/install/15</target>
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.aem</groupId>
-                            <artifactId>aemaacs-opentelemetry-instrumentation.opentelemetry-okhttp-exporter</artifactId>
+                            <artifactId>aemaacs-opentelemetry-instrumentation.minimal</artifactId>
                             <target>/apps/aemaacs-opentelemetry-instrumentation-packages/application/install</target>
                         </embedded>
                     </embeddeds>

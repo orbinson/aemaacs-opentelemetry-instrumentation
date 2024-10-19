@@ -92,6 +92,14 @@ Import-Package: javax.annotation;version=0.0.0,*
         </dependency>
         <dependency>
             <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
         </dependency>
         <dependency>
@@ -111,6 +119,14 @@ Import-Package: javax.annotation;version=0.0.0,*
             <artifactId>aem-sdk-api</artifactId>
         </dependency>
 
+        
+        <!-- Bnd annotations for Service Loader -->
+        <dependency>
+            <groupId>biz.aQute.bnd</groupId>
+            <artifactId>biz.aQute.bnd.annotation</artifactId>
+            <version>6.1.0</version>
+        </dependency>
+        
         <!-- Development -->
         <dependency>
             <groupId>org.jetbrains</groupId>

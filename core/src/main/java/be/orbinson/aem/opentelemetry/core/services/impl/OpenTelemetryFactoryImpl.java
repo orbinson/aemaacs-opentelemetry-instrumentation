@@ -1,12 +1,16 @@
 package be.orbinson.aem.opentelemetry.core.services.impl;
 
+import aQute.bnd.annotation.Resolution;
+import aQute.bnd.annotation.spi.ServiceConsumer;
 import be.orbinson.aem.opentelemetry.services.api.OpenTelemetryConfig;
 import be.orbinson.aem.opentelemetry.services.api.OpenTelemetryFactory;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.exporter.internal.http.HttpSenderProvider;
 import io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.spi.traces.ConfigurableSpanExporterProvider;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -19,6 +23,14 @@ import java.lang.reflect.Method;
 
 @Component(
         immediate = true
+)
+@ServiceConsumer(
+        value = HttpSenderProvider.class,
+        resolution = Resolution.MANDATORY
+)
+@ServiceConsumer(
+        value = ConfigurableSpanExporterProvider.class,
+        resolution = Resolution.MANDATORY
 )
 public class OpenTelemetryFactoryImpl implements OpenTelemetryFactory {
 
