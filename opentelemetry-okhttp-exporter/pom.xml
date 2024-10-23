@@ -59,13 +59,6 @@
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
-                            <artifactId>opentelemetry-exporter-logging</artifactId>
-                            <target>
-                                /apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/15
-                            </target>
-                        </embedded>
-                        <embedded>
-                            <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-exporter-otlp</artifactId>
                             <target>
                                 /apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/15
@@ -364,11 +357,6 @@
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-exporter-common</artifactId>
-            <version>${opentelemetry.version}.0001</version>
-        </dependency>
-        <dependency>
-            <groupId>be.orbinson.osgi</groupId>
-            <artifactId>opentelemetry-exporter-logging</artifactId>
             <version>${opentelemetry.version}.0001</version>
         </dependency>
         <dependency>
