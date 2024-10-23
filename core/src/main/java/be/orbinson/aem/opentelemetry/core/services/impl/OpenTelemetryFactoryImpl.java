@@ -1,5 +1,6 @@
 package be.orbinson.aem.opentelemetry.core.services.impl;
 
+import aQute.bnd.annotation.Cardinality;
 import aQute.bnd.annotation.Resolution;
 import aQute.bnd.annotation.spi.ServiceConsumer;
 import be.orbinson.aem.opentelemetry.services.api.OpenTelemetryConfig;
@@ -30,7 +31,8 @@ import java.lang.reflect.Method;
 )
 @ServiceConsumer(
         value = ConfigurableSpanExporterProvider.class,
-        resolution = Resolution.MANDATORY
+        resolution = Resolution.MANDATORY,
+        cardinality = Cardinality.MULTIPLE
 )
 public class OpenTelemetryFactoryImpl implements OpenTelemetryFactory {
 
