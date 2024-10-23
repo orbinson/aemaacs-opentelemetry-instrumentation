@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2024-10-23
+
 ## [1.0.1] - 2024-10-19
 
 - Ensure OpenTelemetry bundles are available at bundle startup
@@ -17,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Instrumented Apache HttpClient 4.3
 - Logging bridge for using the Logback Appender 1.0
 
-[unreleased]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.0.1...HEAD
+[unreleased]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.0.2...HEAD
+[1.0.2]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/8105cce5a1ca5965f633503305ce800d11b5ab2d...1.0.0
