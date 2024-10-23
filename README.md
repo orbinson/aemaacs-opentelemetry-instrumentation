@@ -25,7 +25,8 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
 OTEL_SERVICE_NAME=aem-author
 ```
 
-For local debugging you can use the logging exporter to print to the console.
+For local debugging, add the `opentelemetry-exporter-logging` bundle to your `all` package in start level `15` with a specific profile for
+local development, so that you can use the logging exporter to print to the console.
 
 ```text
 OTEL_TRACES_EXPORTER=logging
