@@ -40,6 +40,10 @@ public class MetricsProvider {
         metrics.remove(metric);
     }
 
+    public List<OpenTelemetryMetric> getMetrics() {
+        return List.copyOf(metrics);
+    }
+
     @Activate
     protected void activate() {
         OpenTelemetry openTelemetry = openTelemetryFactory.get();
