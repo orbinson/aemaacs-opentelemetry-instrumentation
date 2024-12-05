@@ -7,13 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add API for adding metrics 
+- Add DistributionQueue size gauge
+
 ## [1.0.2] - 2024-10-23
 
+### Removed
+
+- Remove opentelemetry-exporter-logging
+
 ## [1.0.1] - 2024-10-19
+
+### Fixed
 
 - Ensure OpenTelemetry bundles are available at bundle startup
 
 ## [1.0.0] - 2024-10-18
+
+### Added
 
 - Initial release with OpenTelemetry 1.43.0 SDK and dependencies
 - Instrumented Apache HttpClient 4.3
