@@ -1,6 +1,6 @@
 package be.orbinson.aem.opentelemetry.core.filters;
 
-import be.orbinson.aem.opentelemetry.core.ContextPropagator;
+import be.orbinson.aem.opentelemetry.core.context.ContextPropagator;
 import be.orbinson.aem.opentelemetry.services.api.OpenTelemetryConfig;
 import be.orbinson.aem.opentelemetry.services.api.OpenTelemetryFactory;
 import io.opentelemetry.api.OpenTelemetry;

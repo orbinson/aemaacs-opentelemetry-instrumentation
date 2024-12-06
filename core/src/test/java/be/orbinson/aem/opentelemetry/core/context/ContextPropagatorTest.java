@@ -1,6 +1,5 @@
-package be.orbinson.aem.opentelemetry.core;
+package be.orbinson.aem.opentelemetry.core.context;
 
-import be.orbinson.aem.opentelemetry.core.ContextPropagator;
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletRequest;

@@ -1,4 +1,4 @@
-package be.orbinson.aem.opentelemetry.core;
+package be.orbinson.aem.opentelemetry.core.context;
 
 import io.opentelemetry.context.propagation.TextMapGetter;
 import io.opentelemetry.context.propagation.TextMapSetter;

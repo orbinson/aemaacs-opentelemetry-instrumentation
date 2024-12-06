@@ -1,6 +1,5 @@
-package be.orbinson.aem.opentelemetry.core.services;
+package be.orbinson.aem.opentelemetry.core.logs;
 
-import be.orbinson.aem.opentelemetry.core.services.AttributeLogRecordProcessor;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.sdk.common.InstrumentationScopeInfo;
 import io.opentelemetry.sdk.logs.ReadWriteLogRecord;

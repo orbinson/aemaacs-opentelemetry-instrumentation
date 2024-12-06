@@ -1,21 +1,15 @@
 package be.orbinson.aem.opentelemetry.core.filters;
 
-import be.orbinson.aem.opentelemetry.core.filters.OpenTelemetryComponentFilter;
-import be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryConfigImpl;
 import be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryFactoryImpl;
-import io.wcm.testing.mock.aem.junit5.AemContext;
-import io.wcm.testing.mock.aem.junit5.AemContextExtension;
+import be.orbinson.aem.util.OpenTelemetryTest;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.servlets.ServletResolver;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.FilterChain;
 import javax.servlet.Servlet;
@@ -23,28 +17,22 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
-@ExtendWith({AemContextExtension.class, MockitoExtension.class})
-class OpenTelemetryComponentFilterTest {
+class OpenTelemetryComponentFilterTest extends OpenTelemetryTest {
+
     @Mock
     private FilterChain filterChain;
 
     private OpenTelemetryComponentFilter filter;
 
-    private final AemContext context = new AemContext();
-
     @Mock
     private ServletResolver servletResolver;
 
-    // Disable exporting
-    @BeforeAll
-    static void beforeAll() {
-        System.setProperty("otel.metrics.exporter", "none");
-        System.setProperty("otel.traces.exporter", "none");
-        System.setProperty("otel.logs.exporter", "none");
-    }
-    
     @BeforeEach
     void setUp() {
         servletResolver = context.registerService(ServletResolver.class, servletResolver);
@@ -52,8 +40,7 @@ class OpenTelemetryComponentFilterTest {
 
     @Test
     void defaultConfig() throws ServletException, IOException {
-        context.registerInjectActivateService(new OpenTelemetryConfigImpl());
-        context.registerInjectActivateService(new OpenTelemetryFactoryImpl());
+        registerInjectActivateOpenTelemetryService();
         filter = context.registerInjectActivateService(new OpenTelemetryComponentFilter());
 
         SlingHttpServletRequest request = spy(new MockSlingHttpServletRequest(
@@ -69,11 +56,10 @@ class OpenTelemetryComponentFilterTest {
 
     @Test
     void enabledWithoutComponents() throws ServletException, IOException {
-        context.registerInjectActivateService(new OpenTelemetryConfigImpl(),
+        registerInjectActivateOpenTelemetryService(
                 "enabled", true,
                 "endpoint", "http://collector:4318"
         );
-        context.registerInjectActivateService(new OpenTelemetryFactoryImpl());
         filter = context.registerInjectActivateService(new OpenTelemetryComponentFilter());
 
         SlingHttpServletRequest request = spy(new MockSlingHttpServletRequest(
@@ -89,7 +75,7 @@ class OpenTelemetryComponentFilterTest {
 
     @Test
     void configEnabled() throws ServletException, IOException {
-        context.registerInjectActivateService(new OpenTelemetryConfigImpl(),
+        registerInjectActivateOpenTelemetryService(
                 "enabled", true,
                 "traceComponents", true
         );

@@ -15,4 +15,6 @@ public interface OpenTelemetryConfig {
     String[] loggerNames();
 
     boolean traceComponents();
+
+    boolean exportMetrics();
 }

@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Component
 @Designate(ocd = OpenTelemetryConfigImpl.Config.class)
 public class OpenTelemetryConfigImpl implements OpenTelemetryConfig {
-
+    
     @ObjectClassDefinition(name = "OpenTelemetry Configuration")
     @interface Config {
         @AttributeDefinition(description = "Enable telemetry")
@@ -29,6 +29,9 @@ public class OpenTelemetryConfigImpl implements OpenTelemetryConfig {
 
         @AttributeDefinition(description = "Trace components as a separate span")
         boolean traceComponents() default false;
+        
+        @AttributeDefinition(description = "Export metrics")
+        boolean exportMetrics() default false;
 
         @AttributeDefinition(description = "Use the global opentelemetry instead of creating one with the SDK")
         boolean useGlobalOpenTelemetry() default false;
@@ -39,6 +42,7 @@ public class OpenTelemetryConfigImpl implements OpenTelemetryConfig {
     private String instrumentationScopeName;
     private String[] loggerNames;
     private boolean traceComponents;
+    private boolean exportMetrics;
     private boolean useGlobalOpenTelemetry;
 
     @Activate
@@ -48,6 +52,7 @@ public class OpenTelemetryConfigImpl implements OpenTelemetryConfig {
         this.instrumentationScopeName = config.instrumentationScopeName();
         this.loggerNames = config.loggerNames();
         this.traceComponents = config.traceComponents();
+        this.exportMetrics = config.exportMetrics();
         this.useGlobalOpenTelemetry = config.useGlobalOpenTelemetry();
     }
 
@@ -74,6 +79,11 @@ public class OpenTelemetryConfigImpl implements OpenTelemetryConfig {
     @Override
     public boolean traceComponents() {
         return traceComponents;
+    }
+
+    @Override
+    public boolean exportMetrics() {
+        return exportMetrics;
     }
 
     @Override
