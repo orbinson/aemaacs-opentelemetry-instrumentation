@@ -45,6 +45,13 @@
                         </embedded>
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
+                            <artifactId>opentelemetry-common</artifactId>
+                            <target>
+                                /apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/15
+                            </target>
+                        </embedded>
+                        <embedded>
+                            <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-context</artifactId>
                             <target>
                                 /apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/15
@@ -171,10 +178,18 @@
                             </target>
                         </embedded>
 
+
                         <!-- OpenTelemetry dependencies -->
                         <embedded>
                             <groupId>org.snakeyaml</groupId>
                             <artifactId>snakeyaml-engine</artifactId>
+                            <target>
+                                /apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/15
+                            </target>
+                        </embedded>
+                        <embedded>
+                            <groupId>org.jspecify</groupId>
+                            <artifactId>jspecify</artifactId>
                             <target>
                                 /apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/15
                             </target>
@@ -351,6 +366,11 @@
         </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
+            <artifactId>opentelemetry-common</artifactId>
+            <version>${opentelemetry.version}.0001</version>
+        </dependency>
+        <dependency>
+            <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-context</artifactId>
             <version>${opentelemetry.version}.0001</version>
         </dependency>
@@ -417,7 +437,7 @@
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-semconv</artifactId>
-            <version>${opentelemetry.semconv.version}-alpha.0001</version>
+            <version>${opentelemetry.semconv.version}.0001</version>
         </dependency>
 
         <dependency>
@@ -446,6 +466,11 @@
             <groupId>org.snakeyaml</groupId>
             <artifactId>snakeyaml-engine</artifactId>
             <version>2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <!-- OkHttp with dependencies -->

@@ -12,7 +12,6 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.semconv.HttpAttributes;
-import io.opentelemetry.semconv.SemanticAttributes;
 import io.opentelemetry.semconv.ServerAttributes;
 import io.opentelemetry.semconv.UrlAttributes;
 import org.apache.commons.lang3.StringUtils;
@@ -155,7 +154,7 @@ public class OpenTelemetryRequestFilter implements Filter {
 
     private static void setResponseSpanAttributes(Span serverSpan, SlingHttpServletResponse response) {
         serverSpan.setAttribute("http.response.mime_type", response.getContentType());
-        serverSpan.setAttribute(SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, response.getStatus());
+        serverSpan.setAttribute(HttpAttributes.HTTP_RESPONSE_STATUS_CODE, response.getStatus());
         if (response.getStatus() >= 500) {
             serverSpan.setStatus(StatusCode.ERROR);
         }

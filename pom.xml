@@ -70,13 +70,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <opentelemetry.version>1.43.0</opentelemetry.version>
-        <opentelemetry.instrumentation.version>2.9.0</opentelemetry.instrumentation.version>
-        <opentelemetry.semconv.version>1.27.0</opentelemetry.semconv.version>
+        <opentelemetry.version>1.60.1</opentelemetry.version>
+        <opentelemetry.instrumentation.version>2.26.0</opentelemetry.instrumentation.version>
+        <opentelemetry.semconv.version>1.40.0</opentelemetry.semconv.version>
         
         <bnd.plugin.version>6.4.0</bnd.plugin.version>
 
-        <aem.sdk.api>2024.7.17098.20240711T134106Z-240600</aem.sdk.api>
+        <aem.sdk.api>2026.2.24678.20260226T154829Z-260200</aem.sdk.api>
         <wcm.io.aem.sdk.dependencies>${aem.sdk.api}.0000</wcm.io.aem.sdk.dependencies>
     </properties>
 
@@ -243,6 +243,9 @@ Bundle-DocURL:
                     <version>3.1.2</version>
                     <configuration>
                         <useSystemClassLoader>false</useSystemClassLoader>
+                        <systemPropertyVariables>
+                            <javax.xml.parsers.DocumentBuilderFactory>com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl</javax.xml.parsers.DocumentBuilderFactory>
+                        </systemPropertyVariables>
                     </configuration>
                 </plugin>
                 <!-- Maven Failsafe Plugin -->
@@ -316,7 +319,7 @@ Bundle-DocURL:
                 <plugin>
                     <groupId>com.adobe.aem</groupId>
                     <artifactId>aemanalyser-maven-plugin</artifactId>
-                    <version>1.6.6</version>
+                    <version>1.6.16</version>
                     <extensions>true</extensions>
                 </plugin>
                 <!-- Content Package Plugin -->
@@ -724,6 +727,10 @@ Bundle-DocURL:
                                     <rules>
                                         <rule>
                                             <element>CLASS</element>
+                                            <excludes>
+                                                <exclude>be.orbinson.aem.opentelemetry.core.services.impl.LogbackAppenderHelper</exclude>
+                                                <exclude>be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryFactoryImpl</exclude>
+                                            </excludes>
                                             <limits>
                                                 <limit>
                                                     <counter>LINE</counter>
@@ -831,7 +838,7 @@ Bundle-DocURL:
             <dependency>
                 <groupId>io.wcm</groupId>
                 <artifactId>io.wcm.testing.aem-mock.junit5</artifactId>
-                <version>5.4.0</version>
+                <version>5.7.2</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

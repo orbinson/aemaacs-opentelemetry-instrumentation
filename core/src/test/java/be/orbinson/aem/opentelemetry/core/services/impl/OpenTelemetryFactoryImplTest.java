@@ -10,6 +10,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith({AemContextExtension.class, MockitoExtension.class})
@@ -28,7 +29,6 @@ class OpenTelemetryFactoryImplTest {
         System.setProperty("otel.logs.exporter", "none");
     }
 
-
     @Test
     void testActivateWhenConfigIsEnabled() {
         context.registerInjectActivateService(
@@ -39,6 +39,46 @@ class OpenTelemetryFactoryImplTest {
         openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
 
         assertNotNull(openTelemetryFactory.get());
+        assertNotEquals(OpenTelemetry.noop(), openTelemetryFactory.get());
+    }
+
+    @Test
+    void testActivateWhenConfigIsEnabledWithoutLogAppender() {
+        context.registerInjectActivateService(
+                OpenTelemetryConfigImpl.class,
+                "enabled", true,
+                "enableLogAppender", false
+        );
+        openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
+
+        assertNotNull(openTelemetryFactory.get());
+        assertNotEquals(OpenTelemetry.noop(), openTelemetryFactory.get());
+    }
+
+    @Test
+    void testActivateAndDeactivateWithLogAppender() {
+        context.registerInjectActivateService(
+                OpenTelemetryConfigImpl.class,
+                "enabled", true,
+                "enableLogAppender", true
+        );
+        openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
+
+        assertNotNull(openTelemetryFactory.get());
+        openTelemetryFactory.deactivate();
+    }
+
+    @Test
+    void testActivateAndDeactivateWithoutLogAppender() {
+        context.registerInjectActivateService(
+                OpenTelemetryConfigImpl.class,
+                "enabled", true,
+                "enableLogAppender", false
+        );
+        openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
+
+        assertNotNull(openTelemetryFactory.get());
+        openTelemetryFactory.deactivate();
     }
 
     @Test
