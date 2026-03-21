@@ -19,16 +19,82 @@ on:
         default: true
         type: boolean
 
+permissions:
+  contents: write
+
 jobs:
-  call-workflow:
-    uses: orbinson/workflows/.github/workflows/maven-release.yml@njord
-    with:
-      central: ${{ inputs.central }}
-      github: ${{ inputs.github }}
-      push: ${{ inputs.push }}
-      java-version: 11
-    secrets:
-      username: ${{ secrets.SONATYPE_CENTRAL_PORTAL_TOKEN_USER }}
-      password: ${{ secrets.SONATYPE_CENTRAL_PORTAL_TOKEN_PASSWORD }}
-      gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
-      gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+  release:
+    name: Maven and GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java with Maven repository
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 11
+          cache: maven
+          server-id: sonatype-central-portal
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Remove SNAPSHOT from version
+        run: mvn --batch-mode versions:set -DremoveSnapshot versions:commit
+
+      - name: Set RELEASE_VERSION environment variable
+        run: |
+          echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Update CHANGELOG.md
+        uses: thomaseizinger/keep-a-changelog-new-release@v3
+        with:
+          tag: ${{ env.RELEASE_VERSION }}
+
+      - name: Query release info
+        id: query-release-info
+        uses: release-flow/keep-a-changelog-action@v3
+        with:
+          command: query
+          version: latest
+
+      - name: Deploy package
+        if: ${{ inputs.central }}
+        run: |
+          mvn --batch-mode deploy --activate-profiles release -DaltDeploymentRepository=sonatype-central-portal::njord: -Dnjord.autoPublish -Dnjord.publisher=sonatype-cp -Dnjord.publisher.sonatype-cp.releaseRepositoryId=sonatype-central-portal -Dnjord.publishingType=AUTOMATIC -Dnjord.waitForStates=true
+        env:
+          MAVEN_USERNAME: ${{ secrets.SONATYPE_CENTRAL_PORTAL_TOKEN_USER }}
+          MAVEN_PASSWORD: ${{ secrets.SONATYPE_CENTRAL_PORTAL_TOKEN_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Commit and push release
+        if: ${{ inputs.push }}
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Create release ${{ steps.query-release-info.outputs.version }}"
+          tagging_message: ${{ steps.query-release-info.outputs.version }}
+
+      - name: Create release
+        if: ${{ inputs.github }}
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.update-query-release-info.outputs.version }}
+          tag_name: ${{ steps.query-release-info.outputs.version }}
+          body: ${{ steps.query-release-info.outputs.release-notes }}
+
+      - name: Next SNAPSHOT version
+        run: mvn --batch-mode versions:set -DnextSnapshot versions:commit
+
+      - name: Set RELEASE_VERSION env variable
+        run: |
+          echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Commit and push development version
+        if: ${{ inputs.push }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Bump development version to ${{ env.RELEASE_VERSION }}"
