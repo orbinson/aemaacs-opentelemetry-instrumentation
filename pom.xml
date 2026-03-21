@@ -74,6 +74,7 @@
         <opentelemetry.instrumentation.version>2.26.0</opentelemetry.instrumentation.version>
         <opentelemetry.semconv.version>1.40.0</opentelemetry.semconv.version>
         
+        <njord.version>0.9.4</njord.version>
         <bnd.plugin.version>6.4.0</bnd.plugin.version>
 
         <aem.sdk.api>2026.2.24678.20260226T154829Z-260200</aem.sdk.api>
@@ -81,6 +82,13 @@
     </properties>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>eu.maveniverse.maven.njord</groupId>
+                <artifactId>extension3</artifactId>
+                <version>${njord.version}</version>
+            </extension>
+        </extensions>
         <plugins>
             <!-- Maven Release Plugin -->
             <plugin>
@@ -93,13 +101,6 @@
                     <goals>install</goals>
                     <releaseProfiles>release</releaseProfiles>
                 </configuration>
-            </plugin>
-            <!-- Maven Source Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.0</version>
-                <inherited>true</inherited>
             </plugin>
             <!-- Maven Enforcer Plugin -->
             <plugin>
@@ -136,14 +137,6 @@
                         <arg>-parameters</arg>
                     </compilerArgs>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
             </plugin>
         </plugins>
         
@@ -460,17 +453,11 @@ Bundle-DocURL:
                     <version>3.1.0</version>
                 </plugin>
 
-                <!-- Sonatype Release -->
+                <!-- Njord -->
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.6.7</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <serverId>ossrh</serverId>
-                        <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                    </configuration>
+                    <groupId>eu.maveniverse.maven.plugins</groupId>
+                    <artifactId>njord</artifactId>
+                    <version>${njord.version}</version>
                 </plugin>
 
                 <plugin>
@@ -479,7 +466,7 @@ Bundle-DocURL:
                     <version>1.6</version>
                     <executions>
                         <execution>
-                            <phase>deploy</phase>
+                            <phase>verify</phase>
                             <goals>
                                 <goal>sign</goal>
                             </goals>
@@ -772,6 +759,10 @@ Bundle-DocURL:
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
                     </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -854,14 +845,14 @@ Bundle-DocURL:
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <name>Central Repository OSSRH - Snapshots</name>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <id>sonatype-central-portal</id>
+            <name>Sonatype Central Portal - Snapshots</name>
+            <url>https://central.sonatype.com/repository/maven-snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <name>Central Repository OSSRH</name>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>sonatype-central-portal</id>
+            <name>Sonatype Central Portal</name>
+            <url>https://repo.maven.apache.org/maven2</url>
         </repository>
     </distributionManagement>
 </project>
