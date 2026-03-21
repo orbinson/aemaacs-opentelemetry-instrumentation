@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-03-21
+
 - Upgrade to latest opentelemetry versions
 - Make logstash imports optional
 
@@ -22,7 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Instrumented Apache HttpClient 4.3
 - Logging bridge for using the Logback Appender 1.0
 
-[unreleased]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.0.2...HEAD
+[unreleased]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.0.2...1.1.0
 [1.0.2]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/orbinson/aemaacs-opentelemetry-instrumentation/compare/8105cce5a1ca5965f633503305ce800d11b5ab2d...1.0.0
