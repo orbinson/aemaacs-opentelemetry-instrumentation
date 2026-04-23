@@ -29,7 +29,8 @@
                         </goals>
                         <configuration>
                             <bnd><![CDATA[
-Import-Package: javax.annotation;version=0.0.0,*
+Import-Package: !ch.qos.logback.*,javax.annotation;version=0.0.0,*
+DynamicImport-Package: ch.qos.logback.*
                                 ]]></bnd>
                         </configuration>
                     </execution>
