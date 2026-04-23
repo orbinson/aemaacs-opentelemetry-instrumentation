@@ -715,7 +715,6 @@ Bundle-DocURL:
                                         <rule>
                                             <element>CLASS</element>
                                             <excludes>
-                                                <exclude>be.orbinson.aem.opentelemetry.core.services.impl.LogbackAppenderHelper</exclude>
                                                 <exclude>be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryFactoryImpl</exclude>
                                             </excludes>
                                             <limits>

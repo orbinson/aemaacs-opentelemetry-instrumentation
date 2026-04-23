@@ -33,8 +33,7 @@ class OpenTelemetryFactoryImplTest {
     void testActivateWhenConfigIsEnabled() {
         context.registerInjectActivateService(
                 OpenTelemetryConfigImpl.class,
-                "enabled", true,
-                "enableLogAppender", true
+                "enabled", true
         );
         openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
 
@@ -43,37 +42,10 @@ class OpenTelemetryFactoryImplTest {
     }
 
     @Test
-    void testActivateWhenConfigIsEnabledWithoutLogAppender() {
+    void testActivateAndDeactivate() {
         context.registerInjectActivateService(
                 OpenTelemetryConfigImpl.class,
-                "enabled", true,
-                "enableLogAppender", false
-        );
-        openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
-
-        assertNotNull(openTelemetryFactory.get());
-        assertNotEquals(OpenTelemetry.noop(), openTelemetryFactory.get());
-    }
-
-    @Test
-    void testActivateAndDeactivateWithLogAppender() {
-        context.registerInjectActivateService(
-                OpenTelemetryConfigImpl.class,
-                "enabled", true,
-                "enableLogAppender", true
-        );
-        openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
-
-        assertNotNull(openTelemetryFactory.get());
-        openTelemetryFactory.deactivate();
-    }
-
-    @Test
-    void testActivateAndDeactivateWithoutLogAppender() {
-        context.registerInjectActivateService(
-                OpenTelemetryConfigImpl.class,
-                "enabled", true,
-                "enableLogAppender", false
+                "enabled", true
         );
         openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
 

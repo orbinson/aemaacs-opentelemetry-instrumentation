@@ -6,13 +6,9 @@ import org.osgi.annotation.versioning.ProviderType;
 public interface OpenTelemetryConfig {
     boolean enabled();
 
-    boolean enableLogAppender();
-
     String instrumentationScopeName();
 
     boolean useGlobalOpenTelemetry();
-
-    String[] loggerNames();
 
     boolean traceComponents();
 }

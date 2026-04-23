@@ -36,7 +36,6 @@ public class OpenTelemetryFactoryImpl implements OpenTelemetryFactory {
     private OpenTelemetryConfig config;
 
     private OpenTelemetry openTelemetry;
-    private LogbackAppenderHelper logbackAppenderHelper;
 
     @Activate
     public void activate() {
@@ -48,29 +47,12 @@ public class OpenTelemetryFactoryImpl implements OpenTelemetryFactory {
                 openTelemetry = AutoConfiguredOpenTelemetrySdk.builder().build().getOpenTelemetrySdk();
                 LOG.info("OpenTelemetry is enabled with SDK: {}", openTelemetry);
             }
-            if (config.enableLogAppender()) {
-                try {
-                    logbackAppenderHelper = new LogbackAppenderHelper();
-                    logbackAppenderHelper.addAppender(openTelemetry, config.loggerNames());
-                } catch (NoClassDefFoundError e) {
-                    LOG.warn("Logback appender is not available, log forwarding will be disabled", e);
-                    logbackAppenderHelper = null;
-                }
-            }
         }
     }
 
     @Deactivate
     protected void deactivate() {
         if (!config.useGlobalOpenTelemetry() && openTelemetry != null) {
-            if (logbackAppenderHelper != null) {
-                try {
-                    logbackAppenderHelper.detachAppender();
-                } catch (NoClassDefFoundError e) {
-                    LOG.warn("Logback appender is not available, skipping detach", e);
-                }
-                logbackAppenderHelper = null;
-            }
             OpenTelemetrySdk sdk = (OpenTelemetrySdk) openTelemetry;
             sdk.close();
         }

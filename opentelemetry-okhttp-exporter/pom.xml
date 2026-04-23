@@ -151,13 +151,6 @@
 
                         <embedded>
                             <groupId>be.orbinson.osgi</groupId>
-                            <artifactId>opentelemetry-logback-appender-1.0</artifactId>
-                            <target>
-                                /apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/15
-                            </target>
-                        </embedded>
-                        <embedded>
-                            <groupId>be.orbinson.osgi</groupId>
                             <artifactId>opentelemetry-apache-httpclient-4.3</artifactId>
                             <target>
                                 /apps/aemaacs-opentelemetry-instrumentation-opentelemetry-okhttp-exporter-packages/application/install/15
@@ -440,11 +433,6 @@
             <version>${opentelemetry.semconv.version}.0001</version>
         </dependency>
 
-        <dependency>
-            <groupId>be.orbinson.osgi</groupId>
-            <artifactId>opentelemetry-logback-appender-1.0</artifactId>
-            <version>${opentelemetry.instrumentation.version}-alpha.0001</version>
-        </dependency>
         <dependency>
             <groupId>be.orbinson.osgi</groupId>
             <artifactId>opentelemetry-apache-httpclient-4.3</artifactId>
