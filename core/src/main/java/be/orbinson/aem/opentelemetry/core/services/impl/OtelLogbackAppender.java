@@ -39,9 +39,20 @@ public class OtelLogbackAppender extends AppenderBase<ILoggingEvent> {
     @ObjectClassDefinition(name = "OpenTelemetry Logback Appender")
     @interface Config {
         // AppenderTracker filter: (&(objectClass=ch.qos.logback.core.Appender)(loggers=*))
-        // "ROOT" attaches to the root logger, forwarding all SLF4J events.
-        @AttributeDefinition(description = "Logback logger name to attach to. Use ROOT for all loggers.")
-        String loggers() default "ROOT";
+        // Includes ROOT plus every logger configured with additivity=false so their events
+        // are captured even though they never propagate up to ROOT.
+        @AttributeDefinition(description = "Logback loggers to attach to. ROOT covers all propagating loggers; "
+                + "the rest capture additivity=false loggers that write to their own files.")
+        String[] loggers() default {
+            "ROOT",
+            "log.request",
+            "log.access",
+            "log.history",
+            "com.adobe.granite.audit",
+            "org.apache.jackrabbit.core.audit",
+            "org.apache.jackrabbit.oak.audit",
+            "org.apache.jackrabbit.oak.query.stats.QueryRecorder"
+        };
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(OtelLogbackAppender.class);
