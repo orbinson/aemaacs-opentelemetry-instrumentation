@@ -87,6 +87,14 @@ component filter, etc.) keeps working unchanged.
 A docker-compose collector that prints received signals to stdout lives under
 `test/otel-collector/`. See its README for how to start it and point AEM at it.
 
+### Integration tests (`it.tests/`)
+
+A separate `it.tests` module boots a real Sling Starter via the Sling Feature Launcher
+with our cp-converted feature, and asserts OSGi wiring (bundles ACTIVE, Appender service
+registered with the configured `loggers` property, attachment via Sling AppenderTracker).
+Runs via `mvn -Pit -pl it.tests verify`. CI runs it on every push via
+`.github/workflows/integration-tests.yml`.
+
 ## Installation
 
 Three content packages are provided that can be used.

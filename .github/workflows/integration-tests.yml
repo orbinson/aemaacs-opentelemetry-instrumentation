@@ -1,0 +1,54 @@
+name: Integration Tests
+
+# Boots Sling Starter via the feature-launcher Maven plugin, installs our converted feature
+# (api+core+OTel wrappers) and asserts the OSGi wiring works end-to-end.
+#
+# Depends on these SNAPSHOT plugins (built from forks of upstream Apache Sling):
+#   - sling-feature-converter-maven-plugin:1.0.13-SNAPSHOT (cpconverter 1.3.10)
+#   - feature-launcher-maven-plugin:1.0.5-SNAPSHOT (multi-feature aggregation)
+#   - org.apache.sling.feature:2.1.0-SNAPSHOT
+#   - org.apache.sling.feature.launcher:1.3.1-SNAPSHOT
+# They must be available on a snapshot repository the CI can resolve (the
+# project's settings.xml/njord setup handles this).
+#
+# Retries once: the Felix HTTP Jetty 12 1.1.8 bundle has a known activation race
+# that fails ~30% of Sling Starter boots even with the cp-converter approach.
+
+on: [ push, pull_request ]
+
+jobs:
+  it:
+    name: Sling Integration Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 11
+          cache: maven
+
+      - name: Build reactor (skip default tests)
+        run: mvn --batch-mode --update-snapshots -DskipTests install
+
+      - name: Run integration tests (with one retry for Felix HTTP race)
+        run: |
+          mvn --batch-mode -Pit -pl it.tests verify \
+            || (echo "First IT attempt failed — retrying once for the Felix HTTP race." \
+                && rm -rf it.tests/target/launchers \
+                && mvn --batch-mode -Pit -pl it.tests verify)
+
+      - name: Upload Failsafe reports on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failsafe-reports
+          path: |
+            it.tests/target/failsafe-reports/
+            it.tests/target/launchers/**/logs/
+            it.tests/target/launchers/**/*.log
+          retention-days: 7

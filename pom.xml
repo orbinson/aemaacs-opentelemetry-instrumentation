@@ -512,6 +512,14 @@ Bundle-DocURL:
     </build>
 
     <profiles>
+        <!-- Activate with -Pit. Skipped by default so the regular build stays fast. -->
+        <profile>
+            <id>it</id>
+            <modules>
+                <module>it.tests</module>
+            </modules>
+        </profile>
+
         <!-- Skip as much as validation possible, only use when you know what you are doing -->
         <profile>
             <id>quickBuild</id>

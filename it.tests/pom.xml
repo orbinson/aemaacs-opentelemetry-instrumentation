@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>be.orbinson.aem</groupId>
+        <artifactId>aemaacs-opentelemetry-instrumentation</artifactId>
+        <version>1.1.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>aemaacs-opentelemetry-instrumentation.it.tests</artifactId>
+
+    <name>AEMaaCS OpenTelemetry Instrumentation - IT Tests</name>
+    <description>Integration tests that boot a real Sling Starter + our converted feature,
+        and exercise the OpenTelemetry instrumentation end-to-end.</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>reserve-port</id>
+                        <goals>
+                            <goal>reserve-network-port</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <portNames>
+                                <portName>sling.http.port</portName>
+                            </portNames>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                Convert the `all` content package into feature-model artifacts (bundles +
+                configurations + repoinit + residual JCR content) BEFORE Sling Starter boots.
+                Without this, Sling JCR Installer extracts our all-package after the framework
+                is up, triggering a bundle-refresh cascade that races with
+                org.apache.felix.http.jetty12 1.1.8 and corrupts the HTTP whiteboard.
+
+                Uses sling-feature-converter-maven-plugin 1.0.13-SNAPSHOT which embeds
+                cpconverter 1.3.10 (the released 1.0.12 ships cpconverter 1.0.24 which
+                produced colon-in-artifactId GAVs the launcher couldn't resolve).
+            -->
+            <plugin>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>sling-feature-converter-maven-plugin</artifactId>
+                <version>1.0.13-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>convert-cp-to-fm</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>convert-cp</goal>
+                        </goals>
+                        <configuration>
+                            <contentPackages>
+                                <contentPackage>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>aemaacs-opentelemetry-instrumentation.all</artifactId>
+                                </contentPackage>
+                            </contentPackages>
+                            <fmOutput>${project.build.directory}/cp-conversion/fm.out</fmOutput>
+                            <bundleStartOrder>20</bundleStartOrder>
+                            <installConvertedCP>true</installConvertedCP>
+                            <mergeConfigurations>true</mergeConfigurations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                Boot Sling Starter + our cp-converted feature in pre-integration-test, shut
+                down in post-integration-test.
+
+                feature-launcher-maven-plugin 1.0.5-SNAPSHOT adds <featureFiles>/<features>
+                for aggregating multiple input features and <osgiIdentityPolicy> to resolve
+                OSGi-identity (BSN+Bundle-Version) collisions across different Maven
+                coordinates. The matching org.apache.sling.feature core (2.1.0-SNAPSHOT) and
+                feature launcher (1.3.1-SNAPSHOT) carry the underlying implementation.
+            -->
+            <plugin>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>feature-launcher-maven-plugin</artifactId>
+                <version>1.0.5-SNAPSHOT</version>
+                <configuration>
+                    <featureLauncherVersion>1.3.1-SNAPSHOT</featureLauncherVersion>
+                    <launches>
+                        <launch>
+                            <id>sling</id>
+                            <skip>${skipITs}</skip>
+                            <!-- Aggregate Sling Starter and our cp-converted feature into a
+                                 single launchable feature. The launcher invokes
+                                 FeatureBuilder.assemble() on the list. Order matters for
+                                 LAST_WINS: the cp-converted feature comes last so its bundles
+                                 win on OSGi-identity collisions with the platform. -->
+                            <feature>
+                                <groupId>org.apache.sling</groupId>
+                                <artifactId>org.apache.sling.starter</artifactId>
+                                <version>14</version>
+                                <classifier>oak_tar</classifier>
+                                <type>slingosgifeature</type>
+                            </feature>
+                            <featureFiles>
+                                <featureFile>${project.build.directory}/cp-conversion/fm.out/aemaacs-opentelemetry-instrumentation.all.json</featureFile>
+                            </featureFiles>
+                            <!-- Pick the higher Maven version when both features ship the same
+                                 artifact at different versions. -->
+                            <artifactClashOverrides>
+                                <artifactClashOverride>*:*:HIGHEST</artifactClashOverride>
+                            </artifactClashOverrides>
+                            <!-- Resolve OSGi BSN collisions across different Maven coordinates. -->
+                            <osgiBsnCollisionDetection>true</osgiBsnCollisionDetection>
+
+                            <launcherArguments>
+                                <frameworkProperties>
+                                    <org.osgi.service.http.port>${sling.http.port}</org.osgi.service.http.port>
+                                </frameworkProperties>
+                            </launcherArguments>
+                            <startTimeoutSeconds>240</startTimeoutSeconds>
+                        </launch>
+                    </launches>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-sling</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-sling</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <sling.http.port>${sling.http.port}</sling.http.port>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- Reactor ordering: our all package must be built first. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>aemaacs-opentelemetry-instrumentation.all</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>4.2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.14</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.11.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
