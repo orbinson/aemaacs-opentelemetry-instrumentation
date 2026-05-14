@@ -6,7 +6,7 @@ import org.osgi.annotation.versioning.ProviderType;
 public interface OpenTelemetryConfig {
     boolean enabled();
 
-    boolean enableLogBridge();
+    boolean enableLogAppender();
 
     String instrumentationScopeName();
 

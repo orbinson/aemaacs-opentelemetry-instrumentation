@@ -11,51 +11,40 @@ import ch.qos.logback.core.AppenderBase;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.logs.LogRecordBuilder;
 import io.opentelemetry.api.logs.Severity;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.metatype.annotations.AttributeDefinition;
-import org.osgi.service.metatype.annotations.Designate;
-import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Forwards SLF4J log events to the OpenTelemetry logs bridge by registering as a Logback
- * Appender service. Sling Commons Log's AppenderTracker discovers services with the
- * {@code loggers} property and attaches them to the named loggers in the Logback context.
+ * Forwards SLF4J log events to the OpenTelemetry logs bridge. Registers itself programmatically
+ * as a {@link Appender} service with a {@code loggers} property derived from
+ * {@link OpenTelemetryConfig#loggerNames()}. Sling Commons Log's AppenderTracker discovers
+ * services with that property and attaches them to the named Logback loggers.
  *
  * <p>Logback is declared as {@code DynamicImport-Package} so this component activates only
- * when logback classes are available. If logback becomes unavailable in a future AEM release
- * DS marks this component unsatisfied while all other bundle components keep working.
+ * when logback classes are available. If logback ever becomes unavailable in a future AEM
+ * release DS will leave this component unsatisfied while every other component keeps working.
  */
-@Component(immediate = true, service = Appender.class)
-@Designate(ocd = OtelLogbackAppender.Config.class)
+@Component(immediate = true)
 public class OtelLogbackAppender extends AppenderBase<ILoggingEvent> {
 
-    @ObjectClassDefinition(name = "OpenTelemetry Logback Appender")
-    @interface Config {
-        // AppenderTracker filter: (&(objectClass=ch.qos.logback.core.Appender)(loggers=*))
-        // Includes ROOT plus every logger configured with additivity=false so their events
-        // are captured even though they never propagate up to ROOT.
-        @AttributeDefinition(description = "Logback loggers to attach to. ROOT covers all propagating loggers; "
-                + "the rest capture additivity=false loggers that write to their own files.")
-        String[] loggers() default {
-            "ROOT",
-            "log.request",
-            "log.access",
-            "log.history",
-            "com.adobe.granite.audit",
-            "org.apache.jackrabbit.core.audit",
-            "org.apache.jackrabbit.oak.audit",
-            "org.apache.jackrabbit.oak.query.stats.QueryRecorder"
-        };
-    }
-
     private static final Logger LOG = LoggerFactory.getLogger(OtelLogbackAppender.class);
+
+    // Logger name prefixes whose events must never be forwarded — feeding the OTel SDK's own
+    // log output back into itself causes recursive emission once the exporter starts failing.
+    private static final String[] RE_ENTRANCY_PREFIXES = {
+        "io.opentelemetry.",
+        "be.orbinson.aem.opentelemetry."
+    };
 
     @Reference
     private OpenTelemetryFactory openTelemetryFactory;
@@ -63,25 +52,32 @@ public class OtelLogbackAppender extends AppenderBase<ILoggingEvent> {
     @Reference
     private OpenTelemetryConfig config;
 
+    private ServiceRegistration<Appender> registration;
+
     @Activate
-    protected void activate(Config appenderConfig) {
-        if (config.enabled() && config.enableLogBridge()) {
-            LOG.info("OtelLogbackAppender activated: forwarding SLF4J logs to OpenTelemetry");
+    protected void activate(BundleContext context) {
+        if (!config.enabled() || !config.enableLogAppender()) {
+            return;
         }
+        Dictionary<String, Object> props = new Hashtable<>();
+        props.put("loggers", config.loggerNames());
+        registration = context.registerService(Appender.class, this, props);
+        LOG.info("OtelLogbackAppender activated: forwarding SLF4J logs to OpenTelemetry");
     }
 
     @Deactivate
     protected void deactivate() {
+        if (registration != null) {
+            registration.unregister();
+            registration = null;
+        }
         stop();
     }
 
     @Override
     protected void append(ILoggingEvent event) {
-        if (!config.enabled() || !config.enableLogBridge()) {
-            return;
-        }
         String loggerName = event.getLoggerName();
-        if (!isAccepted(loggerName)) {
+        if (isReEntrant(loggerName)) {
             return;
         }
         String resolvedName = loggerName != null ? loggerName : "unknown";
@@ -107,15 +103,11 @@ public class OtelLogbackAppender extends AppenderBase<ILoggingEvent> {
         builder.emit();
     }
 
-    private boolean isAccepted(String loggerName) {
-        String[] names = config.loggerNames();
-        if (names == null || names.length == 0) {
-            return true;
-        }
+    private static boolean isReEntrant(String loggerName) {
         if (loggerName == null) {
             return false;
         }
-        for (String prefix : names) {
+        for (String prefix : RE_ENTRANCY_PREFIXES) {
             if (loggerName.startsWith(prefix)) {
                 return true;
             }

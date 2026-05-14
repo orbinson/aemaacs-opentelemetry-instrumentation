@@ -5,6 +5,7 @@ import be.orbinson.aem.opentelemetry.services.api.OpenTelemetryFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
+import ch.qos.logback.core.Appender;
 import io.opentelemetry.api.OpenTelemetry;
 import io.wcm.testing.mock.aem.junit5.AemContext;
 import io.wcm.testing.mock.aem.junit5.AemContextExtension;
@@ -13,8 +14,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.osgi.framework.ServiceReference;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 @ExtendWith({AemContextExtension.class, MockitoExtension.class})
 class OtelLogbackAppenderTest {
@@ -41,26 +51,57 @@ class OtelLogbackAppenderTest {
     }
 
     @Test
-    void activateWhenEnabledDoesNotThrow() {
+    void registersAppenderServiceWhenEnabled() {
         doReturn(true).when(config).enabled();
-        doReturn(true).when(config).enableLogBridge();
+        doReturn(true).when(config).enableLogAppender();
+        doReturn(new String[]{"ROOT"}).when(config).loggerNames();
 
         context.registerInjectActivateService(OtelLogbackAppender.class);
+
+        ServiceReference<Appender> ref = context.bundleContext().getServiceReference(Appender.class);
+        assertNotNull(ref, "Appender service should be registered");
+        assertArrayEquals(new String[]{"ROOT"}, (String[]) ref.getProperty("loggers"));
     }
 
     @Test
-    void activateWhenDisabledDoesNotThrow() {
+    void registersAppenderWithConfiguredLoggers() {
+        doReturn(true).when(config).enabled();
+        doReturn(true).when(config).enableLogAppender();
+        doReturn(new String[]{"ROOT", "log.request", "log.access"}).when(config).loggerNames();
+
+        context.registerInjectActivateService(OtelLogbackAppender.class);
+
+        ServiceReference<Appender> ref = context.bundleContext().getServiceReference(Appender.class);
+        assertNotNull(ref);
+        assertArrayEquals(new String[]{"ROOT", "log.request", "log.access"},
+                (String[]) ref.getProperty("loggers"));
+    }
+
+    @Test
+    void doesNotRegisterWhenAppenderDisabled() {
+        doReturn(true).when(config).enabled();
+        doReturn(false).when(config).enableLogAppender();
+
+        context.registerInjectActivateService(OtelLogbackAppender.class);
+
+        assertNull(context.bundleContext().getServiceReference(Appender.class));
+    }
+
+    @Test
+    void doesNotRegisterWhenGloballyDisabled() {
         doReturn(false).when(config).enabled();
 
         context.registerInjectActivateService(OtelLogbackAppender.class);
+
+        assertNull(context.bundleContext().getServiceReference(Appender.class));
     }
 
     @Test
-    void appendEmitsRecordWhenEnabled() {
+    void appendEmitsRecord() {
         stubNoop();
         doReturn(true).when(config).enabled();
-        doReturn(true).when(config).enableLogBridge();
-        doReturn(new String[]{}).when(config).loggerNames();
+        doReturn(true).when(config).enableLogAppender();
+        doReturn(new String[]{"ROOT"}).when(config).loggerNames();
         doReturn(Level.ERROR).when(logEvent).getLevel();
         doReturn("be.orbinson.Test").when(logEvent).getLoggerName();
         doReturn("Something went wrong").when(logEvent).getFormattedMessage();
@@ -77,8 +118,8 @@ class OtelLogbackAppenderTest {
     void appendWithExceptionSetsAttributes() {
         stubNoop();
         doReturn(true).when(config).enabled();
-        doReturn(true).when(config).enableLogBridge();
-        doReturn(new String[]{}).when(config).loggerNames();
+        doReturn(true).when(config).enableLogAppender();
+        doReturn(new String[]{"ROOT"}).when(config).loggerNames();
         doReturn(Level.ERROR).when(logEvent).getLevel();
         doReturn("be.orbinson.Test").when(logEvent).getLoggerName();
         doReturn("Error occurred").when(logEvent).getFormattedMessage();
@@ -97,29 +138,11 @@ class OtelLogbackAppenderTest {
     }
 
     @Test
-    void appendWithMatchingPrefixIsForwarded() {
-        stubNoop();
+    void appendSkipsReEntrantOpenTelemetryLogs() {
         doReturn(true).when(config).enabled();
-        doReturn(true).when(config).enableLogBridge();
-        doReturn(new String[]{"be.orbinson"}).when(config).loggerNames();
-        doReturn(Level.INFO).when(logEvent).getLevel();
-        doReturn("be.orbinson.aem.MyService").when(logEvent).getLoggerName();
-        doReturn("Info message").when(logEvent).getFormattedMessage();
-        doReturn(System.currentTimeMillis()).when(logEvent).getTimeStamp();
-        doReturn(null).when(logEvent).getThrowableProxy();
-
-        OtelLogbackAppender appender = context.registerInjectActivateService(OtelLogbackAppender.class);
-        appender.append(logEvent);
-
-        verify(logEvent).getFormattedMessage();
-    }
-
-    @Test
-    void appendWithNonMatchingPrefixIsFiltered() {
-        doReturn(true).when(config).enabled();
-        doReturn(true).when(config).enableLogBridge();
-        doReturn(new String[]{"be.orbinson"}).when(config).loggerNames();
-        doReturn("com.adobe.SomeClass").when(logEvent).getLoggerName();
+        doReturn(true).when(config).enableLogAppender();
+        doReturn(new String[]{"ROOT"}).when(config).loggerNames();
+        doReturn("io.opentelemetry.exporter.internal.grpc.GrpcExporter").when(logEvent).getLoggerName();
 
         OtelLogbackAppender appender = context.registerInjectActivateService(OtelLogbackAppender.class);
         appender.append(logEvent);
@@ -128,32 +151,25 @@ class OtelLogbackAppenderTest {
     }
 
     @Test
-    void appendWhenBridgeDisabledIsNoop() {
+    void appendSkipsReEntrantOwnBundleLogs() {
         doReturn(true).when(config).enabled();
-        doReturn(false).when(config).enableLogBridge();
+        doReturn(true).when(config).enableLogAppender();
+        doReturn(new String[]{"ROOT"}).when(config).loggerNames();
+        doReturn("be.orbinson.aem.opentelemetry.core.services.impl.OtelLogbackAppender")
+                .when(logEvent).getLoggerName();
 
         OtelLogbackAppender appender = context.registerInjectActivateService(OtelLogbackAppender.class);
         appender.append(logEvent);
 
-        verifyNoInteractions(logEvent);
-    }
-
-    @Test
-    void appendWhenGloballyDisabledIsNoop() {
-        doReturn(false).when(config).enabled();
-
-        OtelLogbackAppender appender = context.registerInjectActivateService(OtelLogbackAppender.class);
-        appender.append(logEvent);
-
-        verifyNoInteractions(logEvent);
+        verify(logEvent, never()).getFormattedMessage();
     }
 
     @Test
     void appendWithWarnLevelMapsCorrectly() {
         stubNoop();
         doReturn(true).when(config).enabled();
-        doReturn(true).when(config).enableLogBridge();
-        doReturn(new String[]{}).when(config).loggerNames();
+        doReturn(true).when(config).enableLogAppender();
+        doReturn(new String[]{"ROOT"}).when(config).loggerNames();
         doReturn(Level.WARN).when(logEvent).getLevel();
         doReturn("be.orbinson.Test").when(logEvent).getLoggerName();
         doReturn("Warning message").when(logEvent).getFormattedMessage();
@@ -167,11 +183,15 @@ class OtelLogbackAppenderTest {
     }
 
     @Test
-    void deactivateDoesNotThrow() {
+    void deactivateUnregistersService() {
         doReturn(true).when(config).enabled();
-        doReturn(true).when(config).enableLogBridge();
+        doReturn(true).when(config).enableLogAppender();
+        doReturn(new String[]{"ROOT"}).when(config).loggerNames();
 
         OtelLogbackAppender appender = context.registerInjectActivateService(OtelLogbackAppender.class);
+        assertNotNull(context.bundleContext().getServiceReference(Appender.class));
+
         appender.deactivate();
+        verifyNoInteractions(logEvent);
     }
 }

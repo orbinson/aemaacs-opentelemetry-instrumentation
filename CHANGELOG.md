@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Replace deprecated programmatic Logback attachment with an `OtelLogbackAppender` service.
+  Logback is now imported via `DynamicImport-Package` so the bundle keeps working if Logback
+  disappears from a future AEMaaCS release. The appender registers itself with Sling's
+  AppenderTracker via the `loggers` service property derived from `loggerNames`.
+- Skip log events from `io.opentelemetry.*` and `be.orbinson.aem.opentelemetry.*` to prevent
+  re-entrant emission when the exporter itself logs errors.
+- API package bumped to `2.0.0` because of the new logging integration model.
+
 ## [1.1.0] - 2026-03-21
 
 - Upgrade to latest opentelemetry versions
