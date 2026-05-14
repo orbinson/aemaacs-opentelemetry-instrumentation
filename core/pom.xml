@@ -109,13 +109,59 @@ DynamicImport-Package: ch.qos.logback.*
             <version>${opentelemetry.semconv.version}</version>
         </dependency>
 
-        <!-- AEM -->
+        <!-- Minimal AEM-side dependencies. All OSGi-provided so the bundle runs on both
+             AEM Cloud and AEM 6.5; minimum versions resolved by the parent pom's
+             dependencyManagement section. -->
         <dependency>
-            <groupId>com.adobe.aem</groupId>
-            <artifactId>aem-sdk-api</artifactId>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.servlets.annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.framework</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.component.annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- For org.osgi.service.component.propertytypes.ServiceRanking. -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.component</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.metatype.annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Compile-time only — runtime resolution is via DynamicImport-Package, so any
+             logback shipped by the host (1.2.x on AEM 6.5, 1.5.x on AEM Cloud) is fine. -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.13</version>
+            <scope>provided</scope>
         </dependency>
 
-        
         <!-- Bnd annotations for Service Loader -->
         <dependency>
             <groupId>biz.aQute.bnd</groupId>
@@ -151,8 +197,8 @@ DynamicImport-Package: ch.qos.logback.*
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.wcm</groupId>
-            <artifactId>io.wcm.testing.aem-mock.junit5</artifactId>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.testing.sling-mock.junit5</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -77,8 +77,9 @@
         <njord.version>0.9.4</njord.version>
         <bnd.plugin.version>6.4.0</bnd.plugin.version>
 
+        <!-- Test-only: the io.wcm AEM mock framework pulls com.day.cq / com.adobe.granite
+             classes from this. The bundle itself does not depend on aem-sdk-api. -->
         <aem.sdk.api>2026.2.24678.20260226T154829Z-260200</aem.sdk.api>
-        <wcm.io.aem.sdk.dependencies>${aem.sdk.api}.0000</wcm.io.aem.sdk.dependencies>
     </properties>
 
     <build>
@@ -769,13 +770,68 @@ Bundle-DocURL:
 
     <dependencyManagement>
         <dependencies>
-            <!-- AEM -->
+            <!-- Sling / OSGi / Servlet — Minimum versions that resolve on both AEM Cloud
+                 (latest as of 2026.5) and AEM 6.5. -->
             <dependency>
-                <groupId>io.wcm.maven</groupId>
-                <artifactId>io.wcm.maven.aem-cloud-dependencies</artifactId>
-                <version>${wcm.io.aem.sdk.dependencies}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>org.apache.sling.api</artifactId>
+                <version>2.27.6</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>org.apache.sling.servlets.annotations</artifactId>
+                <version>1.2.6</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.framework</artifactId>
+                <version>1.10.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.annotation.versioning</artifactId>
+                <version>1.1.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.service.component</artifactId>
+                <version>1.5.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.service.component.annotations</artifactId>
+                <version>1.5.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.service.metatype.annotations</artifactId>
+                <version>1.4.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.32</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- Compile-time only; runtime resolution via DynamicImport-Package. -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.2.13</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- Development -->
@@ -798,7 +854,7 @@ Bundle-DocURL:
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
             <!-- Testing -->
             <dependency>
                 <groupId>org.junit</groupId>
@@ -825,10 +881,13 @@ Bundle-DocURL:
                 <version>1.4</version>
                 <scope>test</scope>
             </dependency>
+            <!-- Sling Mocks 3.x — last line that stays on javax.servlet (4.x moved to
+                 jakarta.servlet). Drives OSGi-level service registration in tests; pulls
+                 no AEM API classes. -->
             <dependency>
-                <groupId>io.wcm</groupId>
-                <artifactId>io.wcm.testing.aem-mock.junit5</artifactId>
-                <version>5.7.2</version>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>org.apache.sling.testing.sling-mock.junit5</artifactId>
+                <version>3.6.2</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

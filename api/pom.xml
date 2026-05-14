@@ -84,11 +84,12 @@ Import-Package: javax.annotation;version=0.0.0,*
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
         </dependency>
-        
-        <!-- AEM -->
+
+        <!-- OSGi annotations only: @ProviderType / @Version. Available in AEM Cloud and 6.5. -->
         <dependency>
-            <groupId>com.adobe.aem</groupId>
-            <artifactId>aem-sdk-api</artifactId>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.annotation.versioning</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Development -->

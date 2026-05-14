@@ -12,8 +12,8 @@ import io.opentelemetry.sdk.logs.SdkLoggerProvider;
 import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.logs.export.SimpleLogRecordProcessor;
 import io.opentelemetry.sdk.testing.exporter.InMemoryLogRecordExporter;
-import io.wcm.testing.mock.aem.junit5.AemContext;
-import io.wcm.testing.mock.aem.junit5.AemContextExtension;
+import org.apache.sling.testing.mock.sling.junit5.SlingContext;
+import org.apache.sling.testing.mock.sling.junit5.SlingContextExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,10 +44,10 @@ import static org.mockito.Mockito.doReturn;
  *       re-entrancy guard exactly as they would land in a real collector.</li>
  * </ul>
  */
-@ExtendWith({AemContextExtension.class, MockitoExtension.class})
+@ExtendWith({SlingContextExtension.class, MockitoExtension.class})
 class OtelLogbackAppenderTest {
 
-    private final AemContext context = new AemContext();
+    private final SlingContext context = new SlingContext();
 
     @Mock
     private OpenTelemetryConfig config;

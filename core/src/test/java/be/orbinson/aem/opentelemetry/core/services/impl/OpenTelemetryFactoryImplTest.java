@@ -1,8 +1,8 @@
 package be.orbinson.aem.opentelemetry.core.services.impl;
 
 import io.opentelemetry.api.OpenTelemetry;
-import io.wcm.testing.mock.aem.junit5.AemContext;
-import io.wcm.testing.mock.aem.junit5.AemContextExtension;
+import org.apache.sling.testing.mock.sling.junit5.SlingContext;
+import org.apache.sling.testing.mock.sling.junit5.SlingContextExtension;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith({AemContextExtension.class, MockitoExtension.class})
+@ExtendWith({SlingContextExtension.class, MockitoExtension.class})
 class OpenTelemetryFactoryImplTest {
 
-    private final AemContext context = new AemContext();
+    private final SlingContext context = new SlingContext();
 
     @Spy
     private OpenTelemetryFactoryImpl openTelemetryFactory;
