@@ -13,6 +13,24 @@ This bundle has three main features:
 The vendor code provided by OpenTelemetry is provided by
 an [OSGi wrapper](https://github.com/orbinson/opentelemetry-osgi-wrappers).
 
+## Compatibility
+
+The bundle has no compile or runtime dependency on `aem-sdk-api` and is built against
+the bare minimum Sling / OSGi API surface (`org.apache.sling.api:2.27.6`,
+`org.apache.sling.servlets.annotations:1.2.6`, Servlet 3.1, OSGi R7 annotations,
+SLF4J 1.7, Logback 1.2 — see `pom.xml` `<dependencyManagement>` for the exact pins).
+All pinned versions are at-or-below what AEM 6.5 ships, so the same bundle runs on:
+
+* **AEMaaCS** (the default and primary target — content packages and the AEM analyser
+  config are tailored for cloud).
+* **AEM 6.5** (Service Packs that ship Sling Commons Log 5.x + Logback 1.2+).
+* **Plain Apache Sling** (Sling 12+ runtime; tested with Sling Starter via the
+  it.tests module).
+
+Logback is declared as `DynamicImport-Package` so the appender component fails
+gracefully (becomes unsatisfied) on a host that doesn't expose Logback, while every
+other component keeps working.
+
 ## Configuration
 
 To [autoconfigure](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md)
@@ -78,9 +96,9 @@ loggerNames=["ROOT", "log.request", "log.access", "log.history", \
 The appender is the only component that touches Logback classes. Logback is
 declared as `DynamicImport-Package` in the core bundle manifest — meaning the
 bundle starts and resolves cleanly even if Logback is removed from a future
-AEMaaCS release. In that scenario DS will leave `OtelLogbackAppender`
-unsatisfied while every other component (request filter, OTel factory,
-component filter, etc.) keeps working unchanged.
+AEMaaCS release or absent on a pure Sling host. In that scenario DS will leave
+`OtelLogbackAppender` unsatisfied while every other component (request filter,
+OTel factory, component filter, etc.) keeps working unchanged.
 
 ### Manual end-to-end verification
 
