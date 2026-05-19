@@ -38,14 +38,54 @@ OTEL_SERVICE_NAME=aem-author
 The AEMaaCS OpenTelemetry Instrumentation bundle can be configured with an OSGi configurations with
 pid `be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryConfigImpl`
 
-| property                 | description                                          | default    |
-|--------------------------|------------------------------------------------------|------------|
-| enableLogAppender        | Forwards AEM logs                                    | `false`    |
-| enabled                  | Enable or disable telemetry                          | `false`    |
-| instrumentationScopeName | Instrumentation scope name for spans                 | `aem`      |
-| loggerNames              | Logger to forward when `enableLogAppender` is `true` | `["ROOT"]` |
-| traceComponents          | A span for AEM components                            | `false`    |
-| useGlobalOpenTelemetry   | Use global OpenTelemetry object                      | `false`    |
+| property                 | description                                                                 | default    |
+|--------------------------|-----------------------------------------------------------------------------|------------|
+| enabled                  | Enable or disable telemetry                                                 | `false`    |
+| enableLogAppender        | Forwards AEM logs to OpenTelemetry via a Logback appender                   | `false`    |
+| instrumentationScopeName | Instrumentation scope name for spans                                        | `aem`      |
+| loggerNames              | Logback loggers to attach the appender to (Sling AppenderTracker filter)    | `["ROOT"]` |
+| traceComponents          | A span for AEM components                                                   | `false`    |
+| useGlobalOpenTelemetry   | Use global OpenTelemetry object                                             | `false`    |
+
+### Forwarding additional log files
+
+By default `loggerNames=["ROOT"]` captures every logger that propagates to ROOT,
+which is the source of `error.log`. AEM also configures several loggers with
+`additivity=false` so their events never reach ROOT — to forward those too, add
+them to `loggerNames`:
+
+| logger                                       | file                |
+|----------------------------------------------|---------------------|
+| `log.request`                                | `request.log`       |
+| `log.access`                                 | `access.log`        |
+| `log.history`                                | `history.log`       |
+| `com.adobe.granite.audit`                    | `auditlog.log`      |
+| `org.apache.jackrabbit.core.audit`           | `audit.log`         |
+| `org.apache.jackrabbit.oak.audit`            | `audit.log`         |
+| `org.apache.jackrabbit.oak.query.stats.QueryRecorder` | `queryrecorder.log` (DEBUG, noisy) |
+
+To capture everything except the very noisy DEBUG QueryRecorder:
+
+```
+loggerNames=["ROOT", "log.request", "log.access", "log.history", \
+             "com.adobe.granite.audit", \
+             "org.apache.jackrabbit.core.audit", \
+             "org.apache.jackrabbit.oak.audit"]
+```
+
+### Logback resilience
+
+The appender is the only component that touches Logback classes. Logback is
+declared as `DynamicImport-Package` in the core bundle manifest — meaning the
+bundle starts and resolves cleanly even if Logback is removed from a future
+AEMaaCS release. In that scenario DS will leave `OtelLogbackAppender`
+unsatisfied while every other component (request filter, OTel factory,
+component filter, etc.) keeps working unchanged.
+
+### Manual end-to-end verification
+
+A docker-compose collector that prints received signals to stdout lives under
+`test/otel-collector/`. See its README for how to start it and point AEM at it.
 
 ## Installation
 

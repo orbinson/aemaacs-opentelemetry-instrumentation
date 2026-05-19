@@ -12,7 +12,7 @@ public interface OpenTelemetryConfig {
 
     boolean useGlobalOpenTelemetry();
 
-    String[] loggerNames();
-
     boolean traceComponents();
+
+    String[] loggerNames();
 }

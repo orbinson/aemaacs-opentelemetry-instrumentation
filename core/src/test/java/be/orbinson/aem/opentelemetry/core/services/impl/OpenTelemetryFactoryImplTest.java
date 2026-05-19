@@ -1,8 +1,8 @@
 package be.orbinson.aem.opentelemetry.core.services.impl;
 
 import io.opentelemetry.api.OpenTelemetry;
-import io.wcm.testing.mock.aem.junit5.AemContext;
-import io.wcm.testing.mock.aem.junit5.AemContextExtension;
+import org.apache.sling.testing.mock.sling.junit5.SlingContext;
+import org.apache.sling.testing.mock.sling.junit5.SlingContextExtension;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith({AemContextExtension.class, MockitoExtension.class})
+@ExtendWith({SlingContextExtension.class, MockitoExtension.class})
 class OpenTelemetryFactoryImplTest {
 
-    private final AemContext context = new AemContext();
+    private final SlingContext context = new SlingContext();
 
     @Spy
     private OpenTelemetryFactoryImpl openTelemetryFactory;
@@ -33,8 +33,7 @@ class OpenTelemetryFactoryImplTest {
     void testActivateWhenConfigIsEnabled() {
         context.registerInjectActivateService(
                 OpenTelemetryConfigImpl.class,
-                "enabled", true,
-                "enableLogAppender", true
+                "enabled", true
         );
         openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
 
@@ -43,37 +42,10 @@ class OpenTelemetryFactoryImplTest {
     }
 
     @Test
-    void testActivateWhenConfigIsEnabledWithoutLogAppender() {
+    void testActivateAndDeactivate() {
         context.registerInjectActivateService(
                 OpenTelemetryConfigImpl.class,
-                "enabled", true,
-                "enableLogAppender", false
-        );
-        openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
-
-        assertNotNull(openTelemetryFactory.get());
-        assertNotEquals(OpenTelemetry.noop(), openTelemetryFactory.get());
-    }
-
-    @Test
-    void testActivateAndDeactivateWithLogAppender() {
-        context.registerInjectActivateService(
-                OpenTelemetryConfigImpl.class,
-                "enabled", true,
-                "enableLogAppender", true
-        );
-        openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
-
-        assertNotNull(openTelemetryFactory.get());
-        openTelemetryFactory.deactivate();
-    }
-
-    @Test
-    void testActivateAndDeactivateWithoutLogAppender() {
-        context.registerInjectActivateService(
-                OpenTelemetryConfigImpl.class,
-                "enabled", true,
-                "enableLogAppender", false
+                "enabled", true
         );
         openTelemetryFactory = context.registerInjectActivateService(OpenTelemetryFactoryImpl.class);
 

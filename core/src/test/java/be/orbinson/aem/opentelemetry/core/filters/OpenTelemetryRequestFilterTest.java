@@ -3,8 +3,8 @@ package be.orbinson.aem.opentelemetry.core.filters;
 import be.orbinson.aem.opentelemetry.core.filters.OpenTelemetryRequestFilter;
 import be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryConfigImpl;
 import be.orbinson.aem.opentelemetry.core.services.impl.OpenTelemetryFactoryImpl;
-import io.wcm.testing.mock.aem.junit5.AemContext;
-import io.wcm.testing.mock.aem.junit5.AemContextExtension;
+import org.apache.sling.testing.mock.sling.junit5.SlingContext;
+import org.apache.sling.testing.mock.sling.junit5.SlingContextExtension;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestPathInfo;
@@ -22,14 +22,14 @@ import java.io.IOException;
 
 import static org.mockito.Mockito.*;
 
-@ExtendWith({AemContextExtension.class, MockitoExtension.class})
+@ExtendWith({SlingContextExtension.class, MockitoExtension.class})
 class OpenTelemetryRequestFilterTest {
     @Mock
     private FilterChain filterChain;
 
     private OpenTelemetryRequestFilter filter;
 
-    private final AemContext context = new AemContext();
+    private final SlingContext context = new SlingContext();
 
     // Disable exporting
     @BeforeAll

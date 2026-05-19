@@ -18,37 +18,37 @@ public class OpenTelemetryConfigImpl implements OpenTelemetryConfig {
         @AttributeDefinition(description = "Enable telemetry")
         boolean enabled() default false;
 
-        @AttributeDefinition(description = "Enable logging appender to bridge logs")
+        @AttributeDefinition(description = "Enable Logback appender to forward AEM logs to OpenTelemetry")
         boolean enableLogAppender() default false;
 
         @AttributeDefinition(description = "Instrumentation scope name for spans")
         String instrumentationScopeName() default "aem";
-
-        @AttributeDefinition(description = "Logger names to append")
-        String[] loggerNames() default {"ROOT"};
 
         @AttributeDefinition(description = "Trace components as a separate span")
         boolean traceComponents() default false;
 
         @AttributeDefinition(description = "Use the global opentelemetry instead of creating one with the SDK")
         boolean useGlobalOpenTelemetry() default false;
+
+        @AttributeDefinition(description = "Logback loggers to attach the appender to")
+        String[] loggerNames() default {"ROOT"};
     }
 
     private boolean enabled;
     private boolean enableLogAppender;
     private String instrumentationScopeName;
-    private String[] loggerNames;
     private boolean traceComponents;
     private boolean useGlobalOpenTelemetry;
+    private String[] loggerNames;
 
     @Activate
     protected void activate(Config config) {
         this.enabled = config.enabled();
         this.enableLogAppender = config.enableLogAppender();
         this.instrumentationScopeName = config.instrumentationScopeName();
-        this.loggerNames = config.loggerNames();
         this.traceComponents = config.traceComponents();
         this.useGlobalOpenTelemetry = config.useGlobalOpenTelemetry();
+        this.loggerNames = config.loggerNames();
     }
 
     @Override
@@ -67,11 +67,6 @@ public class OpenTelemetryConfigImpl implements OpenTelemetryConfig {
     }
 
     @Override
-    public String[] loggerNames() {
-        return Arrays.copyOf(loggerNames, loggerNames.length);
-    }
-
-    @Override
     public boolean traceComponents() {
         return traceComponents;
     }
@@ -79,6 +74,11 @@ public class OpenTelemetryConfigImpl implements OpenTelemetryConfig {
     @Override
     public boolean useGlobalOpenTelemetry() {
         return useGlobalOpenTelemetry;
+    }
+
+    @Override
+    public String[] loggerNames() {
+        return Arrays.copyOf(loggerNames, loggerNames.length);
     }
 
 }

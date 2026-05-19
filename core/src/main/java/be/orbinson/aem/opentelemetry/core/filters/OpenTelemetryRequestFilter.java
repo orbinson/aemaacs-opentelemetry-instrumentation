@@ -14,7 +14,6 @@ import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.semconv.HttpAttributes;
 import io.opentelemetry.semconv.ServerAttributes;
 import io.opentelemetry.semconv.UrlAttributes;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestPathInfo;
@@ -141,15 +140,19 @@ public class OpenTelemetryRequestFilter implements Filter {
 
     private static String getHost(SlingHttpServletRequest request) {
         String value = request.getHeader("X-Forwarded-Host");
-        return StringUtils.defaultIfBlank(value, request.getServerName());
+        return isNotBlank(value) ? value : request.getServerName();
     }
 
     private static long getPort(SlingHttpServletRequest request) {
         String value = request.getHeader("X-Forwarded-Port");
-        if (StringUtils.isNotBlank(value)) {
+        if (isNotBlank(value)) {
             return Integer.parseInt(value);
         }
         return request.getServerPort();
+    }
+
+    private static boolean isNotBlank(String s) {
+        return s != null && !s.trim().isEmpty();
     }
 
     private static void setResponseSpanAttributes(Span serverSpan, SlingHttpServletResponse response) {
@@ -162,13 +165,13 @@ public class OpenTelemetryRequestFilter implements Filter {
 
     private static String getRoute(RequestPathInfo pathInfo) {
         String result = pathInfo.getResourcePath();
-        if (StringUtils.isNotBlank(pathInfo.getSelectorString())) {
+        if (isNotBlank(pathInfo.getSelectorString())) {
             result += "." + pathInfo.getSelectorString();
         }
-        if (StringUtils.isNotBlank(pathInfo.getExtension())) {
+        if (isNotBlank(pathInfo.getExtension())) {
             result += "." + pathInfo.getExtension();
         }
-        if (StringUtils.isNotBlank(pathInfo.getSuffix())) {
+        if (isNotBlank(pathInfo.getSuffix())) {
             result += pathInfo.getSuffix();
         }
         return result;
